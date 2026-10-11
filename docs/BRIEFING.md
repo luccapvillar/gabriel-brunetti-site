@@ -41,7 +41,7 @@ Veio do questionário respondido pelo piloto e das correções enviadas depois p
 | Nome completo | Gabriel Lima Brunetti |
 | Idade | 14 anos e 10 meses (em 11/10/2026). Data de nascimento exata **não informada** |
 | Cidade | Valparaíso de Goiás (GO), no Entorno do Distrito Federal |
-| Telefone | (61) 99921-8444 |
+| Telefone | (61) 99921-8444, **com WhatsApp** (confirmado pelo cliente em 11/10/2026) |
 | E-mail | gabrielbruneti098@gmail.com (com **um** "t" em "bruneti", exatamente assim) |
 | Instagram | @gabriellbrunetti_ (com **dois** "l") |
 | Número | 33 (placa amarela, visível em todas as fotos) |
@@ -69,7 +69,7 @@ Veio do questionário respondido pelo piloto e das correções enviadas depois p
 
 ### O que NÃO sabemos (não inventar)
 
-O ano dos resultados do BKS, a data de nascimento, se o telefone tem WhatsApp (é muito provável, mas confirmar), o domínio do site, audiência e números de seguidores, cotas e valores de patrocínio, quem tirou as fotos sem marca d'água, a ordem cronológica entre BKS e Circuito Paulista, especificações técnicas do motor e da categoria, e se o número 33 tem relação com o Verstappen (que usou o 33 até 2021). Esta última seria uma ótima história, mas **só entra se o cliente confirmar**.
+O ano dos resultados do BKS, a data de nascimento, o domínio do site, audiência e números de seguidores, cotas e valores de patrocínio, quem tirou as fotos sem marca d'água, a ordem cronológica entre BKS e Circuito Paulista, especificações técnicas do motor e da categoria, e se o número 33 tem relação com o Verstappen (que usou o 33 até 2021). Esta última seria uma ótima história, mas **só entra se o cliente confirmar**.
 
 ---
 
@@ -282,7 +282,7 @@ Campeonatos: temporada atual — Campeonato Brasiliense e Campeonato Brasileiro;
 
 ## 9. Pendências para confirmar com o cliente
 
-1. O telefone (61) 99921-8444 tem WhatsApp? (O site usa WhatsApp para patrocínio.)
+1. ~~O telefone (61) 99921-8444 tem WhatsApp?~~ **Confirmado: sim.** Os botões de patrocínio levam para o WhatsApp.
 2. Data de nascimento (para a idade se atualizar sozinha; hoje está fixa em "14 anos").
 3. Ano dos três segundos lugares no BKS.
 4. "Outubro do ano passado" = outubro de 2025?
