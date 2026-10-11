@@ -65,7 +65,7 @@ export const capitulos = [
     titulo: 'A tomada de tempo',
     citacao:
       'Na minha opinião, o momento mais difícil em um fim de semana de corrida é a tomada de tempo, porque é onde você tem que extrair todo o potencial do kart, do equipamento, pra você conseguir largar bem.',
-    ligacao: 'Ligado à referência: a mentalidade que ele admira no Verstappen.',
+    ligacao: 'Ligado à referência: o foco que ele admira no Verstappen.',
   },
   {
     id: 'antes-da-largada',

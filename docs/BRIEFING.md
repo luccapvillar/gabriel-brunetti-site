@@ -47,8 +47,8 @@ Veio do questionário respondido pelo piloto e das correções enviadas depois p
 | Número | 33 (placa amarela, visível em todas as fotos) |
 | Categoria | **Kart F400 Júnior**. O "F4J" da placa é a sigla da F400 Júnior |
 | Estilo de pilotagem | Limpo e conservador, com boa noção de ultrapassagem (definição do próprio Gabriel) |
-| Referência | Max Verstappen, principalmente pela mentalidade. O número 33 tem **um pouco** de relação com ele (confirmado pelo cliente; usar com essa intensidade) |
-| Motivação inicial | Influência do pai |
+| Referência | Max Verstappen, pela **dedicação, foco e mentalidade** (o cliente pediu para destacar isso). O 33 tem um pouco de relação com ele, mas o cliente preferiu não usar o "um pouco" no site: a menção ao 33 saiu |
+| Motivação inicial | Influência do pai e da **madrasta**, que já correu de kart pela **Dibo Racing** (a mesma equipe do Gabriel hoje). Informado pelo cliente em 11/10/2026 |
 | Início dos treinamentos | **Outubro de 2025** (confirmado pelo cliente) |
 | Competições atuais | Campeonato Brasiliense e Campeonato Brasileiro |
 | Campeonatos já disputados | BKS e Circuito Paulista |
