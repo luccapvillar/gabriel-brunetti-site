@@ -462,7 +462,8 @@ function mapa() {
     itens.forEach((it, n) => it.classList.toggle('ativo', n === i));
   };
   pontos.forEach((p, i) => {
-    p.addEventListener('click', () => ativar(p.getAttribute('aria-expanded') === 'true' ? -1 : i));
+    // Clicar sempre mostra o ponto (no mouse, o hover já o ativou; alternar aqui o desligaria)
+    p.addEventListener('click', () => ativar(i));
     p.addEventListener('mouseenter', () => ponteiroFino.matches && ativar(i));
   });
   itens.forEach((it, i) => it.addEventListener('mouseenter', () => ponteiroFino.matches && ativar(i)));

@@ -50,10 +50,7 @@ const frentes = [
           <li data-revelar style={`--atraso:${i * 0.08}s`}>
             <p class="frentes__numero">
               {f.valor !== null ? (
-                <span class="frentes__valor">
-                  <span data-contador={f.valor}>{f.valor}</span>
-                  {f.unidade}
-                </span>
+                <span class="frentes__valor"><span data-contador={f.valor}>{f.valor}</span>{f.unidade}</span>
               ) : (
                 <span class="frentes__palavra">Toda semana</span>
               )}
@@ -95,7 +92,9 @@ const frentes = [
 
   .frentes__numero {
     display: grid;
-    grid-template-rows: clamp(4rem, 2.6rem + 5vw, 6.75rem) auto;
+    /* A primeira linha tem a altura exata do número: os rótulos das três frentes ficam alinhados */
+    --tamanho: clamp(4.5rem, 3rem + 5.5vw, 8rem);
+    grid-template-rows: calc(var(--tamanho) * 0.82) auto;
     align-items: end;
     gap: 12px;
     margin-bottom: 24px;
@@ -112,7 +111,7 @@ const frentes = [
   }
 
   .frentes__valor {
-    font-size: clamp(4.5rem, 3rem + 5.5vw, 8rem);
+    font-size: var(--tamanho);
   }
 
   .frentes__palavra {
