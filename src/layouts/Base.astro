@@ -62,6 +62,8 @@ const jsonLd = {
     <meta name="theme-color" content="#0C0F0E" />
     <meta name="color-scheme" content="dark light" />
     {site && <link rel="canonical" href={site.href} />}
+    {/* Prévia (PUBLIC_PREVIA=1): fora das buscas até o site oficial entrar no ar */}
+    {import.meta.env.PUBLIC_PREVIA === '1' && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="icon" href={caminho('favicon.svg')} type="image/svg+xml" />
     <link rel="icon" href={caminho('favicon-32.png')} type="image/png" sizes="32x32" />
