@@ -164,6 +164,12 @@ button {
   padding-block: var(--secao);
 }
 
+/* Seções abaixo da dobra só são montadas quando chegam perto da tela (menos trabalho na carga) */
+main > .secao:not(.resumo) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1400px;
+}
+
 .claro {
   background: var(--osso);
   color: var(--asfalto);

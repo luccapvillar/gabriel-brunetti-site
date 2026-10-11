@@ -24,19 +24,21 @@ const ficha = [
   <div class="conteiner">
     <div class="perfil__topo">
       <figure class="perfil__video" data-revelar>
-        <video
-          muted
-          loop
-          playsinline
-          preload="none"
-          poster={poster.src(460)}
-          width={poster.largura}
-          height={poster.altura}
-          aria-label="Gabriel fechando o macacão antes de entrar na pista"
-          data-loop
-        >
-          <source src="/video/perfil-loop.mp4" type="video/mp4" />
-        </video>
+        <div class="perfil__tela">
+          <Foto nome="perfil-loop-poster" alt="" sizes="(min-width: 768px) 460px, 100vw" class="perfil__capa" />
+          <video
+            muted
+            loop
+            playsinline
+            preload="none"
+            width={poster.largura}
+            height={poster.altura}
+            aria-label="Gabriel fechando o macacão antes de entrar na pista"
+            data-loop
+          >
+            <source src="/video/perfil-loop.mp4" type="video/mp4" />
+          </video>
+        </div>
         <button class="perfil__pausa" type="button" aria-pressed="false" data-loop-botao hidden>
           <span class="visualmente-oculto" data-loop-rotulo>Pausar vídeo</span>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pausa" d="M4 3h3v10H4zM9 3h3v10H9z" /><path class="i-play" d="M4 2.5v11L13 8z" /></svg>
@@ -129,12 +131,31 @@ const ficha = [
     max-width: 460px;
   }
 
-  .perfil__video video {
-    width: 100%;
+  /* A capa é uma imagem comum (carrega só perto da tela); o vídeo fica por cima e começa transparente */
+  .perfil__tela {
+    position: relative;
     aspect-ratio: 460 / 576;
-    object-fit: cover;
-    background: var(--asfalto-2);
     border-radius: var(--raio);
+    overflow: hidden;
+    background: var(--asfalto-2);
+  }
+
+  .perfil__tela video,
+  .perfil__tela :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .perfil__tela video {
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .perfil__tela video.tocando {
+    opacity: 1;
   }
 
   .perfil__video figcaption {

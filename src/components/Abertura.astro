@@ -2,43 +2,59 @@
 /**
  * Abertura: foto → "33" gigante → recorte do piloto por cima.
  * O número fica entre a foto e o recorte, então parece estar atrás do Gabriel,
- * com o capacete entre os dois "3". Foto e recorte têm o mesmo tamanho e enquadramento.
- *
- * Coordenadas em pixels da foto original (a-frente.jpg, 2560×1706):
- *   capacete: x 1222–1626 (centro ≈ 1424), y 180–560.
- * No celular usa o recorte 3:4 gerado por `npm run midia` (x 700, largura 1280).
+ * com o capacete entre os dois "3". O recorte cobre só a faixa do capacete e do tronco
+ * e é posicionado sobre a foto com as mesmas coordenadas (scripts/coordenadas-abertura.mjs).
+ * No celular, foto e recorte usam o enquadramento 3:4 centrado no capacete.
  */
 import { imagem } from '../data/imagens';
 import { textoEmCurvas } from '../../scripts/texto-em-curvas.mjs';
+import {
+  FOTO,
+  CAPACETE,
+  CELULAR,
+  NUMERO_DESKTOP,
+  NUMERO_CELULAR,
+  RECORTE_DESKTOP,
+  RECORTE_CELULAR,
+} from '../../scripts/coordenadas-abertura.mjs';
 
 const foto = await imagem('a-frente');
-const recorte = await imagem('a-frente-recorte');
 const fotoCel = await imagem('a-frente-celular');
-const recorteCel = await imagem('a-frente-recorte-celular');
+const recorte = await imagem('a-frente-recorte-topo');
+const recorteCel = await imagem('a-frente-recorte-topo-celular');
 
 const numero = await textoEmCurvas('33', { peso: 900, tamanho: 100 });
 const c = numero.caixa;
 const viewBox = `${c.x.toFixed(2)} ${c.y.toFixed(2)} ${c.largura.toFixed(2)} ${c.altura.toFixed(2)}`;
-const proporcao = c.altura / c.largura;
 
-// Posição e tamanho do "33" em frações do palco (largura do número / centro x / topo y).
-// No desktop o número começa abaixo do cabeçalho; no celular a foto já começa abaixo dele.
-const desktop = { largura: 1440 / 2560, centro: 1424 / 2560, topo: 190 / 1706, foco: 0.54 };
-const celular = { largura: 1110 / 1280, centro: (1424 - 700) / 1280, topo: 60 / 1706, foco: 0.5 };
-
-const estilo = [
-  `--d-largura:${desktop.largura}`,
-  `--d-centro:${desktop.centro}`,
-  `--d-topo:${desktop.topo}`,
-  `--d-foco:${desktop.foco}`,
-  `--c-largura:${celular.largura}`,
-  `--c-centro:${celular.centro}`,
-  `--c-topo:${celular.topo}`,
-  `--c-foco:${celular.foco}`,
-  `--n-proporcao:${proporcao}`,
-].join(';');
+// Tudo em frações do palco (o palco tem a proporção da imagem usada em cada tamanho de tela).
+const fr = (v: number, total: number) => +(v / total).toFixed(5);
+const quadro = {
+  d: { x: 0, y: 0, w: FOTO.largura, h: FOTO.altura },
+  c: { x: CELULAR.left, y: CELULAR.top, w: CELULAR.width, h: CELULAR.height },
+};
+const variaveis: Record<string, number> = {};
+for (const [k, q, n, r] of [
+  ['d', quadro.d, NUMERO_DESKTOP, RECORTE_DESKTOP],
+  ['c', quadro.c, NUMERO_CELULAR, RECORTE_CELULAR],
+] as const) {
+  variaveis[`--${k}-largura`] = fr(n.largura, q.w);
+  variaveis[`--${k}-centro`] = fr(CAPACETE.centroX - q.x, q.w);
+  variaveis[`--${k}-topo`] = fr(n.topo - q.y, q.h);
+  variaveis[`--${k}-r-x`] = fr(r.left - q.x, q.w);
+  variaveis[`--${k}-r-y`] = fr(r.top - q.y, q.h);
+  variaveis[`--${k}-r-w`] = fr(r.width, q.w);
+  variaveis[`--${k}-r-h`] = fr(r.height, q.h);
+}
+// Ponto da foto que fica no centro do painel quando ele corta as laterais
+variaveis['--d-foco'] = 0.54;
+variaveis['--c-foco'] = 0.5;
+const estilo = Object.entries(variaveis)
+  .map(([k, v]) => `${k}:${v}`)
+  .join(';');
 
 const SIZES_DESKTOP = '(min-width: 1024px) 70vw, 100vw';
+const SIZES_RECORTE = '(min-width: 1024px) 44vw, 100vw';
 const DESKTOP = '(min-width: 1024px)';
 
 const dados = [
@@ -57,7 +73,7 @@ const dados = [
         <source media={DESKTOP} type="image/webp" srcset={foto.srcset('webp')} sizes={SIZES_DESKTOP} width={foto.largura} height={foto.altura} />
         <source type="image/avif" srcset={fotoCel.srcset('avif')} sizes="100vw" width={fotoCel.largura} height={fotoCel.altura} />
         <img
-          src={fotoCel.src(1024)}
+          src={fotoCel.src(750)}
           srcset={fotoCel.srcset('webp')}
           sizes="100vw"
           width={fotoCel.largura}
@@ -73,10 +89,19 @@ const dados = [
       </div>
 
       <picture class="camada camada--recorte" aria-hidden="true">
-        <source media={DESKTOP} type="image/avif" srcset={recorte.srcset('avif')} sizes={SIZES_DESKTOP} width={recorte.largura} height={recorte.altura} />
-        <source media={DESKTOP} type="image/webp" srcset={recorte.srcset('webp')} sizes={SIZES_DESKTOP} width={recorte.largura} height={recorte.altura} />
+        <source media={DESKTOP} type="image/avif" srcset={recorte.srcset('avif')} sizes={SIZES_RECORTE} width={recorte.largura} height={recorte.altura} />
+        <source media={DESKTOP} type="image/webp" srcset={recorte.srcset('webp')} sizes={SIZES_RECORTE} width={recorte.largura} height={recorte.altura} />
         <source type="image/avif" srcset={recorteCel.srcset('avif')} sizes="100vw" width={recorteCel.largura} height={recorteCel.altura} />
-        <img src={recorteCel.src(1024)} srcset={recorteCel.srcset('webp')} sizes="100vw" width={recorteCel.largura} height={recorteCel.altura} alt="" decoding="sync" />
+        <img
+          src={recorteCel.src(750)}
+          srcset={recorteCel.srcset('webp')}
+          sizes="100vw"
+          width={recorteCel.largura}
+          height={recorteCel.altura}
+          alt=""
+          fetchpriority="low"
+          data-recorte
+        />
       </picture>
     </div>
   </div>
@@ -126,6 +151,10 @@ const dados = [
     --centro: var(--c-centro);
     --topo: var(--c-topo);
     --foco: var(--c-foco);
+    --r-x: var(--c-r-x);
+    --r-y: var(--c-r-y);
+    --r-w: var(--c-r-w);
+    --r-h: var(--c-r-h);
     position: relative;
     overflow: hidden;
     container-type: size;
@@ -161,14 +190,30 @@ const dados = [
     object-fit: cover;
   }
 
-  /* Escurece um pouco a foto (só ela) para o número e o piloto recortado saltarem */
+  .camada--recorte {
+    inset: auto;
+    left: calc(var(--r-x) * 100%);
+    top: calc(var(--r-y) * 100%);
+    width: calc(var(--r-w) * 100%);
+    height: calc(var(--r-h) * 100%);
+  }
+
+  /* Com JS, o número só entra quando o recorte do piloto já carregou (senão cobriria o capacete) */
+  :global(.js) .numero {
+    visibility: hidden;
+  }
+
+  :global(.js) .pronta .numero {
+    visibility: visible;
+  }
+
+  /* Só um degradê no topo, para o cabeçalho. Ele termina antes da borda de baixo do recorte
+     (58% da altura): se a foto fosse escurecida por inteiro, a borda do recorte apareceria como uma linha. */
   .camada--foto::after {
     content: '';
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(180deg, rgb(12 15 14 / 0.35), rgb(12 15 14 / 0) 40%),
-      rgb(12 15 14 / 0.22);
+    background: linear-gradient(180deg, rgb(12 15 14 / 0.4), rgb(12 15 14 / 0) 30%);
   }
 
   .numero {
@@ -285,6 +330,10 @@ const dados = [
       --centro: var(--d-centro);
       --topo: var(--d-topo);
       --foco: var(--d-foco);
+      --r-x: var(--d-r-x);
+      --r-y: var(--d-r-y);
+      --r-w: var(--d-r-w);
+      --r-h: var(--d-r-h);
       grid-column: 2;
       grid-row: 1;
       aspect-ratio: auto;
@@ -330,8 +379,9 @@ const dados = [
       animation: assenta 1.6s var(--curva) both;
     }
 
-    .numero svg {
-      animation: sobe 1.2s 0.25s var(--curva) both;
+    :global(html:not(.js)) .numero svg,
+    .pronta .numero svg {
+      animation: sobe 1.2s 0.1s var(--curva) both;
     }
 
     .linha > span {
@@ -348,20 +398,20 @@ const dados = [
       animation: aparece 0.9s 0.35s var(--curva) both;
     }
 
+    /* Ao rolar, foto e recorte descem juntos (palco) e o número desce mais: camadas em velocidades diferentes */
     @supports (animation-timeline: view()) {
-      .camada,
+      .palco {
+        animation:
+          assenta 1.6s var(--curva) both,
+          desce-palco linear both;
+        animation-timeline: auto, view();
+        animation-range: normal, exit 0% exit 100%;
+      }
+
       .numero {
-        animation: var(--anim-scroll) linear both;
+        animation: desce-numero linear both;
         animation-timeline: view();
         animation-range: exit 0% exit 100%;
-      }
-
-      .camada {
-        --anim-scroll: desce-foto;
-      }
-
-      .numero {
-        --anim-scroll: desce-numero;
       }
     }
   }
@@ -392,16 +442,15 @@ const dados = [
     }
   }
 
-  /* Camadas em velocidades diferentes ao rolar: o número fica para trás */
-  @keyframes desce-foto {
+  @keyframes desce-palco {
     to {
-      transform: translateY(14%);
+      transform: translateY(12%);
     }
   }
 
   @keyframes desce-numero {
     to {
-      transform: translateY(30%);
+      transform: translateY(22%);
     }
   }
 </style>

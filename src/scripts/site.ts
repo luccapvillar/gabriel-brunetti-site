@@ -13,13 +13,15 @@ function cabecalho() {
   const el = $('[data-cabecalho]');
   const abertura = $('[data-abertura]');
   if (!el) return;
-  let ultimo = scrollY;
+  let ultimo = 0; // ler scrollY aqui forçaria um layout na carga; a primeira leitura fica no rAF
   let pendente = false;
+  // Altura da abertura medida sem forçar layout na carga (ResizeObserver entrega depois do layout)
+  let limite = 400;
+  if (abertura) new ResizeObserver(([e]) => (limite = e.contentRect.height * 0.6)).observe(abertura);
 
   const atualizar = () => {
     pendente = false;
     const y = scrollY;
-    const limite = abertura ? abertura.offsetHeight * 0.6 : 200;
     el.classList.toggle('solido', y > 40);
     if (!el.classList.contains('aberto')) {
       el.classList.toggle('escondido', y > limite && y > ultimo + 2);
@@ -33,7 +35,7 @@ function cabecalho() {
       requestAnimationFrame(atualizar);
     }
   }, { passive: true });
-  atualizar();
+  requestAnimationFrame(atualizar);
 
   // Quem navega pelo teclado precisa ver o cabeçalho
   el.addEventListener('focusin', () => el.classList.remove('escondido'));
@@ -49,6 +51,8 @@ function cabecalho() {
     menu.hidden = !abrir;
     el.classList.toggle('aberto', abrir);
     document.documentElement.style.overflow = abrir ? 'hidden' : '';
+    // Com o menu aberto, o resto da página sai do caminho do teclado e do leitor de tela
+    $$('main, footer, [data-cta-flutuante]').forEach((n) => ((n as HTMLElement).inert = abrir));
     if (abrir) $('a', menu)?.focus();
   };
   botao.addEventListener('click', () => alternar(botao.getAttribute('aria-expanded') !== 'true'));
@@ -127,10 +131,22 @@ function contadores() {
   $$('[data-contador]').forEach((el) => obs.observe(el));
 }
 
-/* ---------- Abertura: o mouse desloca as camadas alguns pixels ---------- */
+/* ---------- Abertura ---------- */
 function abertura() {
   const el = $('[data-abertura]');
-  if (!el || semMovimento.matches || !ponteiroFino.matches) return;
+  if (!el) return;
+
+  // O "33" só aparece quando o recorte do piloto já está pronto para ficar por cima dele
+  const recorte = $<HTMLImageElement>('[data-recorte]', el);
+  const pronta = () => el.classList.add('pronta');
+  if (!recorte || (recorte.complete && recorte.naturalWidth)) pronta();
+  else {
+    recorte.addEventListener('load', pronta, { once: true });
+    recorte.addEventListener('error', pronta, { once: true });
+  }
+
+  // O mouse desloca as camadas alguns pixels (profundidade)
+  if (semMovimento.matches || !ponteiroFino.matches) return;
   let quadro = 0;
   el.addEventListener('pointermove', (e) => {
     cancelAnimationFrame(quadro);
@@ -153,6 +169,7 @@ function loopPerfil() {
   const rotulo = $('[data-loop-rotulo]');
   if (!video || !botao) return;
   let pausadoPeloUsuario = semMovimento.matches;
+  video.addEventListener('playing', () => video.classList.add('tocando'), { once: true });
   botao.hidden = false;
 
   const atualizarBotao = () => {
@@ -271,6 +288,7 @@ function filme() {
   video.controls = false;
   const mostrarControles = () => {
     if (capa) capa.hidden = true;
+    secao.classList.add('filme-iniciado');
     video.controls = true;
   };
 

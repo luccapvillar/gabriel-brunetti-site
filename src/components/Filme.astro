@@ -3,11 +3,10 @@
  * Como ele pensa a corrida + filme. As citações funcionam como capítulos:
  * "Ouvir no filme" leva ao player e toca a partir daquele ponto.
  */
+import Foto from './Foto.astro';
 import Rotulo from './Rotulo.astro';
-import { imagem } from '../data/imagens';
 import { capitulos, formatarTempo } from '../data/gabriel';
 
-const poster = await imagem('filme-poster');
 ---
 
 <section class="filme secao" id="filme" aria-labelledby="titulo-filme">
@@ -24,12 +23,12 @@ const poster = await imagem('filme-poster');
     <div class="filme__grade">
       <div class="player" data-player>
         <div class="player__tela">
+          <Foto nome="filme-poster" alt="" sizes="(min-width: 1024px) 58vw, 100vw" class="player__poster" />
           <video
             controls
             playsinline
             data-com-controles
             preload="none"
-            poster={poster.src(1024)}
             width="1024"
             height="576"
             aria-label="Filme: Do box à bandeirada"
@@ -109,13 +108,32 @@ const poster = await imagem('filme-poster');
   }
 
   .player__tela video {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
+  /* Capa como imagem preguiçosa (o atributo poster carregaria logo na abertura da página) */
+  .player__tela :global(.player__poster),
+  .player__tela :global(.player__poster img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  :global(.filme-iniciado) .player__tela :global(.player__poster) {
+    display: none;
+  }
+
+
+
   .player__capa {
     position: absolute;
+    z-index: 2;
     inset: 0;
     display: flex;
     align-items: flex-end;
