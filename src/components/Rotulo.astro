@@ -1,0 +1,14 @@
+---
+/** Rótulo de seção: faixa tricolor (como as listras do topo do capacete) + número + nome. */
+interface Props {
+  numero?: string;
+  nome: string;
+}
+const { numero, nome } = Astro.props;
+---
+
+<p class="rotulo">
+  <span class="faixa" aria-hidden="true"></span>
+  {numero && <b>{numero}</b>}
+  <span>{nome}</span>
+</p>

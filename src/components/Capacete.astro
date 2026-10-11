@@ -1,0 +1,316 @@
+---
+/**
+ * Visualizador de 4 ângulos do capacete. As fotos têm o mesmo fundo e o mesmo
+ * enquadramento, então trocar entre elas dá a ilusão de rotação.
+ * Arrastar (mouse ou dedo), setas do teclado ou os botões de ângulo.
+ */
+import Foto from './Foto.astro';
+import Rotulo from './Rotulo.astro';
+
+const angulos = [
+  {
+    nome: 'capacete-frente',
+    rotulo: 'Frente',
+    alt: 'Capacete de Gabriel visto de frente: “GABRIEL” no topo e a faixa da viseira com Artmix e Dibo.',
+    nota: '“GABRIEL” no topo e, na faixa da viseira, Artmix e Dibo.',
+  },
+  {
+    nome: 'capacete-tres-quartos',
+    rotulo: 'Três-quartos',
+    alt: 'Capacete de Gabriel em três-quartos, pelo lado esquerdo, com as faixas verde, branca e vermelha.',
+    nota: 'As faixas verde, branca e vermelha descem do topo para as laterais.',
+  },
+  {
+    nome: 'capacete-lateral',
+    rotulo: 'Lateral',
+    alt: 'Lateral esquerda do capacete, com “GABRIEL A+” escrito sobre as faixas.',
+    nota: '“GABRIEL A+” na lateral.',
+  },
+  {
+    nome: 'capacete-traseira',
+    rotulo: 'Traseira',
+    alt: 'Traseira do capacete de Gabriel, em verde, branco e vermelho.',
+    nota: 'Na traseira, as mesmas três cores.',
+  },
+];
+
+const cores = [
+  { nome: 'Verde', hex: '#17A35A', onde: 'Capacete e kart', classe: 'verde' },
+  { nome: 'Branco', hex: '#F2F0EA', onde: 'Capacete e kart', classe: 'branco' },
+  { nome: 'Vermelho', hex: '#E2382F', onde: 'Capacete', classe: 'vermelho' },
+  { nome: 'Amarelo', hex: '#F4CF1C', onde: 'Placa 33', classe: 'amarelo' },
+];
+---
+
+<section class="capacete claro secao" id="capacete" aria-labelledby="titulo-capacete">
+  <div class="conteiner capacete__grade">
+    <div class="capacete__texto">
+      <Rotulo numero="02" nome="Capacete" />
+      <h2 class="h2" id="titulo-capacete">Verde, branco e vermelho</h2>
+      <p class="lead texto-2 capacete__lead">
+        Verde, branco e vermelho no capacete; verde e branco no kart; o 33 na placa amarela. É assim que Gabriel é
+        reconhecido na pista, e é daí que saem as cores deste site.
+      </p>
+
+      <ul class="cores" aria-label="Cores do capacete e do kart">
+        {
+          cores.map((c) => (
+            <li>
+              <span class:list={['cores__amostra', `cores__amostra--${c.classe}`]} aria-hidden="true">
+                {c.classe === 'amarelo' && '33'}
+              </span>
+              <span class="cores__nome">{c.nome}</span>
+              <span class="mono texto-2">{c.onde}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="visor" data-capacete>
+      <div
+        class="visor__palco"
+        role="slider"
+        tabindex="0"
+        aria-label="Ângulo do capacete. Use as setas ou arraste para girar."
+        aria-valuemin="1"
+        aria-valuemax={angulos.length}
+        aria-valuenow="1"
+        aria-valuetext={angulos[0].rotulo}
+        data-capacete-palco
+      >
+        {
+          angulos.map((a, i) => (
+            <Foto
+              nome={a.nome}
+              alt={a.alt}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class:list={['visor__foto', i === 0 && 'ativa']}
+              data-angulo={i}
+              draggable="false"
+            />
+          ))
+        }
+        <span class="visor__dica mono" aria-hidden="true">
+          <span class="seta-esq">←</span> Arraste para girar <span>→</span>
+        </span>
+      </div>
+
+      <div class="visor__controles">
+        <button class="visor__seta" type="button" data-capacete-anterior aria-label="Ângulo anterior">←</button>
+        <ol class="visor__angulos">
+          {
+            angulos.map((a, i) => (
+              <li>
+                <button type="button" data-capacete-ir={i} aria-pressed={i === 0 ? 'true' : 'false'}>
+                  <span class="mono">{String(i + 1).padStart(2, '0')}</span> {a.rotulo}
+                </button>
+              </li>
+            ))
+          }
+        </ol>
+        <button class="visor__seta" type="button" data-capacete-proximo aria-label="Próximo ângulo">→</button>
+      </div>
+      <p class="visor__nota texto-2" aria-live="polite" data-capacete-nota>{angulos[0].nota}</p>
+      <script type="application/json" is:inline data-capacete-notas set:html={JSON.stringify(angulos.map((a) => ({ rotulo: a.rotulo, nota: a.nota })))} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .capacete__grade {
+    display: grid;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .capacete .h2 {
+    font-size: clamp(2rem, 1.3rem + 2.4vw, 3.25rem);
+  }
+
+  .capacete__lead {
+    margin-top: clamp(20px, 3vw, 32px);
+    max-width: 30em;
+  }
+
+  .cores {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    margin-top: clamp(32px, 4vw, 48px);
+    border: 1px solid var(--linha-escura);
+    background: var(--linha-escura);
+  }
+
+  .cores li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 14px;
+    align-items: center;
+    padding: 16px;
+    background: var(--osso);
+  }
+
+  .cores__amostra {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    font-family: var(--fonte-titulo);
+    font-weight: 900;
+    font-size: 0.75rem;
+    letter-spacing: -0.04em;
+  }
+
+  .cores__amostra--verde { background: var(--verde); }
+  .cores__amostra--branco { background: #fff; box-shadow: inset 0 0 0 1px var(--linha-escura); }
+  .cores__amostra--vermelho { background: var(--vermelho); }
+  .cores__amostra--amarelo { background: var(--amarelo); border-radius: 6px; width: 46px; height: 34px; }
+
+  .cores__nome {
+    font-weight: 650;
+    line-height: 1.2;
+  }
+
+  .cores .mono {
+    font-size: 0.6875rem;
+  }
+
+  /* ---------- Visualizador ---------- */
+
+  .visor__palco {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: var(--raio);
+    background: #9cc0dd;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .visor__palco:active {
+    cursor: grabbing;
+  }
+
+  .visor__palco :global(.visor__foto),
+  .visor__palco :global(.visor__foto img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .visor__palco :global(.visor__foto) {
+    opacity: 0;
+    transition: opacity 0.18s linear;
+  }
+
+  .visor__palco :global(.visor__foto.ativa) {
+    opacity: 1;
+  }
+
+  .visor__dica {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    translate: -50% 0;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgb(12 15 14 / 0.62);
+    color: var(--osso);
+    font-size: 0.6875rem;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+
+  :global(.girou) .visor__dica {
+    opacity: 0;
+  }
+
+  .visor__controles {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .visor__seta {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgb(12 15 14 / 0.3);
+    font-size: 1.1rem;
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+
+  .visor__seta:hover {
+    border-color: var(--asfalto);
+  }
+
+  .visor__angulos {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+
+  .visor__angulos button {
+    width: 100%;
+    min-height: 44px;
+    padding: 14px 4px 4px;
+    font-size: 0.8125rem;
+    font-weight: 550;
+    text-align: left;
+    color: var(--texto-escuro-2);
+    border-top: 2px solid var(--linha-escura);
+    transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 6px;
+    line-height: 1.25;
+  }
+
+  .visor__angulos .mono {
+    font-size: 0.6875rem;
+  }
+
+  .visor__angulos button[aria-pressed='true'] {
+    color: var(--asfalto);
+    border-top-color: var(--verde);
+  }
+
+  .visor__nota {
+    margin-top: 14px;
+    min-height: 1.6em;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 479px) {
+    .visor__angulos button {
+      font-size: 0;
+      padding-top: 12px;
+    }
+
+    .visor__angulos .mono {
+      font-size: 0.6875rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .capacete__grade {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+
+    .cores {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

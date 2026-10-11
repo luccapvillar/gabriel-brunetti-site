@@ -1,0 +1,388 @@
+/* ==========================================================================
+   Base — cores do capacete e do kart, tipografia e ritmo editorial.
+   Conceito "Linha limpa": layout contido, linhas finas, poucos momentos de impacto.
+   ========================================================================== */
+
+:root {
+  --asfalto: #0c0f0e;
+  --asfalto-2: #141917;
+  --asfalto-3: #1c2220;
+  --osso: #f2f0ea;
+  --osso-2: #e7e4dc;
+  --verde: #17a35a;
+  --verde-claro: #3ccf7c;
+  --verde-texto: #0b6b3a; /* verde para texto sobre fundo claro (contraste AA) */
+  --verde-profundo: #0b3d26;
+  --vermelho: #e2382f;
+  --amarelo: #f4cf1c;
+
+  --texto-claro-2: rgb(242 240 234 / 0.72);
+  --texto-escuro-2: #4d524f;
+  --linha-clara: rgb(242 240 234 / 0.16);
+  --linha-escura: rgb(12 15 14 / 0.16);
+
+  --fonte-titulo: 'Mona Expandida', 'Arial Black', system-ui, sans-serif;
+  --fonte-texto: 'Mona Texto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fonte-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --margem: clamp(20px, 5vw, 72px);
+  --largura: 1440px;
+  --secao: clamp(88px, 12vw, 176px);
+  --cabecalho: 64px;
+  --raio: 4px;
+  --curva: cubic-bezier(0.2, 0.7, 0.1, 1);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--cabecalho);
+}
+
+body {
+  margin: 0;
+  background: var(--asfalto);
+  color: var(--osso);
+  font-family: var(--fonte-texto);
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  line-height: 1.6;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+img,
+video,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ol,
+ul {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--verde-claro);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.claro :focus-visible {
+  outline-color: var(--verde-texto);
+}
+
+::selection {
+  background: var(--verde);
+  color: var(--asfalto);
+}
+
+.pular {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--osso);
+  color: var(--asfalto);
+  border-radius: 999px;
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.pular:focus {
+  transform: none;
+}
+
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Estrutura --------------------------------------------------------- */
+
+.conteiner {
+  width: 100%;
+  max-width: calc(var(--largura) + 2 * var(--margem));
+  margin-inline: auto;
+  padding-inline: var(--margem);
+}
+
+.secao {
+  position: relative;
+  padding-block: var(--secao);
+}
+
+.claro {
+  background: var(--osso);
+  color: var(--asfalto);
+  color-scheme: light;
+}
+
+.claro ::selection {
+  color: var(--osso);
+  background: var(--verde-texto);
+}
+
+/* --- Tipografia -------------------------------------------------------- */
+
+.titulo {
+  font-family: var(--fonte-titulo);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.h2 {
+  font-family: var(--fonte-titulo);
+  font-weight: 760;
+  font-size: clamp(2rem, 1.2rem + 3.6vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.mono {
+  font-family: var(--fonte-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.lead {
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.texto-2 {
+  color: var(--texto-claro-2);
+}
+
+.claro .texto-2 {
+  color: var(--texto-escuro-2);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* --- Rótulo de seção: faixa tricolor do capacete + número --------------- */
+
+.rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(20px, 3vw, 32px);
+  font-family: var(--fonte-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--texto-claro-2);
+}
+
+.claro .rotulo {
+  color: var(--texto-escuro-2);
+}
+
+.rotulo b {
+  color: var(--osso);
+  font-weight: 600;
+}
+
+.claro .rotulo b {
+  color: var(--asfalto);
+}
+
+.faixa {
+  display: inline-flex;
+  flex: none;
+  width: 22px;
+  height: 8px;
+  border-radius: 1px;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--verde) 0 33.33%, var(--osso) 33.33% 66.66%, var(--vermelho) 66.66%);
+}
+
+.claro .faixa {
+  box-shadow: inset 0 0 0 1px var(--linha-escura);
+}
+
+/* --- Placa 33 (substitui a logo, que não existe) ------------------------ */
+
+.placa {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  background: var(--amarelo);
+  color: var(--asfalto);
+  border-radius: 0.22em;
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  width: 1.9em;
+  height: 1.38em;
+  font-size: 18px;
+}
+
+/* --- Botões em pílula -------------------------------------------------- */
+
+.botao {
+  --fundo: var(--verde);
+  --cor: var(--asfalto);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--fundo);
+  color: var(--cor);
+  border: 1px solid var(--fundo);
+  font-family: var(--fonte-texto);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.25s var(--curva),
+    color 0.25s var(--curva),
+    border-color 0.25s var(--curva);
+}
+
+.botao:hover {
+  --fundo: var(--verde-claro);
+}
+
+.botao--linha {
+  --fundo: transparent;
+  --cor: var(--osso);
+  border-color: var(--linha-clara);
+}
+
+.botao--linha:hover {
+  --fundo: transparent;
+  border-color: var(--osso);
+}
+
+.claro .botao--linha {
+  --cor: var(--asfalto);
+  border-color: rgb(12 15 14 / 0.3);
+}
+
+.claro .botao--linha:hover {
+  border-color: var(--asfalto);
+}
+
+.botao svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.seta {
+  display: inline-block;
+  transition: transform 0.3s var(--curva);
+}
+
+a:hover .seta,
+button:hover .seta {
+  transform: translateX(4px);
+}
+
+/* --- Revelação no scroll (só com JS e sem redução de movimento) ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-revelar] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.9s var(--curva),
+      transform 0.9s var(--curva);
+    transition-delay: var(--atraso, 0s);
+  }
+
+  .js [data-revelar].visivel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

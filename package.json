@@ -3,14 +3,15 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "Site oficial do piloto Gabriel Lima Brunetti (#33, Kart F400) — Astro, estático, focado em design, performance e SEO.",
+  "description": "Site oficial do piloto Gabriel Lima Brunetti (#33, Kart F400 Júnior) — Astro, estático, focado em design, performance e SEO.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
     "midia": "node scripts/preparar-midia.mjs",
-    "fontes": "node scripts/preparar-fontes.mjs"
+    "fontes": "node scripts/preparar-fontes.mjs",
+    "marca": "node scripts/preparar-marca.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

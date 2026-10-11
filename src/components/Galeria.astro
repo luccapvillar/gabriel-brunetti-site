@@ -1,0 +1,324 @@
+---
+/**
+ * Galeria: faixa horizontal com arrasto e snap; lightbox com teclado e gesto.
+ */
+import Foto from './Foto.astro';
+import Rotulo from './Rotulo.astro';
+import { imagem } from '../data/imagens';
+
+const fotos = [
+  { nome: 'pelotao', alt: 'Gabriel no meio do pelotão, cercado por karts e capacetes de várias cores.', credito: '' },
+  { nome: 'motor-curva', alt: 'Gabriel numa curva à esquerda, com o motor vermelho do kart à mostra e os boxes ao fundo.', credito: '' },
+  { nome: 'curva-roda-no-ar', alt: 'Gabriel numa curva com a roda interna do kart fora do chão, sob céu azul.', credito: 'Foto: BC51 Photos' },
+  { nome: 'frente-04', alt: 'Gabriel à frente do kart 04, com outro kart ao fundo.', credito: '' },
+  { nome: 'pelotao-577', alt: 'Gabriel no pelotão, entre o kart 577 e outros adversários.', credito: '' },
+  { nome: 'frente-reta', alt: 'Gabriel vindo de frente pela reta, sob um céu nublado.', credito: 'Foto: BC51 Photos' },
+  { nome: 'disputa-235', alt: 'Gabriel lado a lado com o kart 235, vistos por trás de uma barreira.', credito: '' },
+  { nome: 'lateral-movimento', alt: 'Kart 33 em movimento, de lado, com o fundo borrado.', credito: 'Foto: BC51 Photos' },
+  { nome: 'zebra', alt: 'Gabriel passando sobre a zebra numa curva à direita, com o kart inteiro à vista.', credito: '' },
+];
+
+const itens = await Promise.all(
+  fotos.map(async (f) => {
+    const img = await imagem(f.nome);
+    return { ...f, grande: img.src(2400), srcsetGrande: img.srcset('webp'), vertical: img.altura > img.largura };
+  }),
+);
+---
+
+<section class="galeria secao" id="galeria" aria-labelledby="titulo-galeria">
+  <div class="conteiner galeria__topo">
+    <div>
+      <Rotulo nome="Galeria" />
+      <h2 class="h2" id="titulo-galeria">Em pista</h2>
+    </div>
+    <div class="galeria__setas">
+      <button type="button" class="galeria__seta" data-galeria-anterior aria-label="Fotos anteriores">←</button>
+      <button type="button" class="galeria__seta" data-galeria-proximo aria-label="Próximas fotos">→</button>
+    </div>
+  </div>
+
+  <div class="faixa-fotos" data-galeria>
+    <ul class="faixa-fotos__lista" data-galeria-lista>
+      {
+        itens.map((f, i) => (
+          <li class:list={['faixa-fotos__item', f.vertical && 'vertical']}>
+            <button
+              type="button"
+              class="faixa-fotos__botao"
+              data-abrir={i}
+              data-src={f.grande}
+              data-srcset={f.srcsetGrande}
+              data-alt={f.alt}
+              data-credito={f.credito}
+              aria-label={`Ampliar foto ${i + 1} de ${itens.length}: ${f.alt}`}
+            >
+              <Foto nome={f.nome} alt="" sizes="(min-width: 1024px) 40vw, 80vw" draggable="false" />
+            </button>
+            <p class="faixa-fotos__legenda mono">
+              <span>{String(i + 1).padStart(2, '0')}</span>
+              {f.credito}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+    <span class="cursor-arraste mono" aria-hidden="true" data-cursor>Arraste</span>
+  </div>
+
+  <dialog class="lightbox" aria-label="Foto ampliada" data-lightbox>
+    <figure class="lightbox__figura">
+      <img alt="" data-lightbox-img />
+      <figcaption class="lightbox__legenda">
+        <span class="mono" data-lightbox-contagem></span>
+        <span data-lightbox-alt></span>
+        <span class="mono texto-2" data-lightbox-credito></span>
+      </figcaption>
+    </figure>
+    <button type="button" class="lightbox__fechar" data-lightbox-fechar aria-label="Fechar">✕</button>
+    <button type="button" class="lightbox__nav lightbox__nav--ant" data-lightbox-anterior aria-label="Foto anterior">←</button>
+    <button type="button" class="lightbox__nav lightbox__nav--prox" data-lightbox-proximo aria-label="Próxima foto">→</button>
+  </dialog>
+</section>
+
+<style>
+  .galeria {
+    padding-bottom: clamp(72px, 10vw, 144px);
+  }
+
+  .galeria__topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  .galeria__setas {
+    display: none;
+    gap: 8px;
+  }
+
+  .galeria__seta {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    border: 1px solid var(--linha-clara);
+    font-size: 1.1rem;
+    transition: border-color 0.2s;
+  }
+
+  .galeria__seta:hover {
+    border-color: var(--osso);
+  }
+
+  .faixa-fotos {
+    position: relative;
+  }
+
+  .faixa-fotos__lista {
+    display: flex;
+    gap: clamp(12px, 1.5vw, 24px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--margem);
+    padding-inline: var(--margem);
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .faixa-fotos__lista::-webkit-scrollbar {
+    display: none;
+  }
+
+  :global(.arrastando) .faixa-fotos__lista {
+    scroll-snap-type: none;
+    cursor: grabbing;
+  }
+
+  :global(.arrastando) .faixa-fotos__botao {
+    pointer-events: none;
+  }
+
+  .faixa-fotos__item {
+    flex: none;
+    width: min(80vw, 560px);
+    scroll-snap-align: start;
+  }
+
+  .faixa-fotos__item.vertical {
+    width: min(55vw, 380px);
+  }
+
+  .faixa-fotos__botao {
+    display: block;
+    width: 100%;
+    border-radius: var(--raio);
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  .faixa-fotos__botao :global(img) {
+    width: 100%;
+    height: clamp(260px, 36vw, 480px);
+    object-fit: cover;
+    transition: scale 0.8s var(--curva);
+    -webkit-user-drag: none;
+  }
+
+  .faixa-fotos__botao:hover :global(img) {
+    scale: 1.03;
+  }
+
+  .faixa-fotos__legenda {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    font-size: 0.6875rem;
+    color: var(--texto-claro-2);
+  }
+
+  .faixa-fotos__legenda span {
+    color: var(--osso);
+  }
+
+  .cursor-arraste {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 999px;
+    background: var(--osso);
+    color: var(--asfalto);
+    font-size: 0.6875rem;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.4;
+    transition:
+      opacity 0.25s,
+      scale 0.35s var(--curva);
+  }
+
+  :global(.cursor-ativo) .cursor-arraste {
+    opacity: 1;
+    scale: 1;
+  }
+
+  @media (pointer: fine) {
+    .galeria__setas {
+      display: flex;
+    }
+
+    .faixa-fotos__lista {
+      cursor: grab;
+    }
+  }
+
+  /* ---------- Lightbox ---------- */
+
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(8 10 9 / 0.97);
+    color: var(--osso);
+    overscroll-behavior: contain;
+  }
+
+  .lightbox::backdrop {
+    background: rgb(8 10 9 / 0.9);
+  }
+
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .lightbox__figura {
+    display: grid;
+    gap: 14px;
+    width: 100%;
+    max-width: 1600px;
+    padding: 64px var(--margem) 24px;
+    touch-action: pan-y;
+  }
+
+  .lightbox__figura img {
+    width: 100%;
+    max-height: calc(100dvh - 180px);
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .lightbox__legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 0.9375rem;
+    color: var(--texto-claro-2);
+  }
+
+  .lightbox__legenda .mono:first-child {
+    color: var(--verde-claro);
+  }
+
+  .lightbox__fechar,
+  .lightbox__nav {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    border: 1px solid var(--linha-clara);
+    background: rgb(12 15 14 / 0.6);
+    font-size: 1.1rem;
+  }
+
+  .lightbox__fechar {
+    top: 12px;
+    right: 12px;
+  }
+
+  .lightbox__nav {
+    top: 50%;
+    translate: 0 -50%;
+  }
+
+  .lightbox__nav--ant {
+    left: 12px;
+  }
+
+  .lightbox__nav--prox {
+    right: 12px;
+  }
+
+  @media (max-width: 767px) {
+    .lightbox__nav {
+      top: auto;
+      bottom: 16px;
+      translate: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox[open] .lightbox__figura {
+      animation: abre-foto 0.45s var(--curva);
+    }
+  }
+
+  @keyframes abre-foto {
+    from {
+      opacity: 0;
+      scale: 0.97;
+    }
+  }
+</style>

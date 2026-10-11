@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Cabecalho from '../components/Cabecalho.astro';
+import Abertura from '../components/Abertura.astro';
+import Resumo from '../components/Resumo.astro';
+import Perfil from '../components/Perfil.astro';
+import Capacete from '../components/Capacete.astro';
+import Trajetoria from '../components/Trajetoria.astro';
+import Resultados from '../components/Resultados.astro';
+import Preparacao from '../components/Preparacao.astro';
+import Filme from '../components/Filme.astro';
+import Galeria from '../components/Galeria.astro';
+import ProximoPasso from '../components/ProximoPasso.astro';
+import Parcerias from '../components/Parcerias.astro';
+import Contato from '../components/Contato.astro';
+import Rodape from '../components/Rodape.astro';
+
+const titulo = 'Gabriel Brunetti #33 — Piloto de Kart F400 Júnior | Site oficial';
+const descricao =
+  'Gabriel Lima Brunetti, 14 anos, de Valparaíso de Goiás. Piloto do kart #33 na F400 Júnior com a Dibo Racing, três vezes 2º lugar no BKS, no Campeonato Brasiliense e no Brasileiro. Objetivo: Stock Car.';
+---
+
+<Base titulo={titulo} descricao={descricao}>
+  <Cabecalho />
+  <main id="conteudo">
+    <Abertura />
+    <Resumo />
+    <Perfil />
+    <Capacete />
+    <Trajetoria />
+    <Resultados />
+    <Preparacao />
+    <Filme />
+    <Galeria />
+    <ProximoPasso />
+    <Parcerias />
+    <Contato />
+  </main>
+  <Rodape />
+</Base>
+
+<script>
+  import '../scripts/site';
+</script>

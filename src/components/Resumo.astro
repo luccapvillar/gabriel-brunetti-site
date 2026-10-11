@@ -1,0 +1,122 @@
+---
+import { mesesDesdeInicio } from '../data/gabriel';
+
+const texto =
+  'Gabriel começou a treinar em outubro de 2025. Desde então, terminou em segundo lugar em três etapas do BKS, correu o Circuito Paulista e chegou ao Campeonato Brasileiro, com academia cinco vezes por semana, kart duas vezes e simulador toda semana.';
+const palavras = texto.split(' ');
+
+// O número de meses é calculado na geração do site e atualizado no navegador (data-meses).
+const meses = mesesDesdeInicio();
+const numeros = [
+  { valor: meses, texto: 'meses desde o primeiro treino', meses: true },
+  { valor: 3, texto: 'segundos lugares no BKS' },
+  { valor: 4, texto: 'campeonatos disputados: BKS, Circuito Paulista, Brasiliense e Brasileiro' },
+];
+---
+
+<section class="resumo claro secao" aria-label="Resumo">
+  <div class="conteiner">
+    <p class="resumo__texto">
+      {palavras.map((p) => <span>{p} </span>)}
+    </p>
+
+    <ul class="resumo__numeros">
+      {
+        numeros.map((n, i) => (
+          <li data-revelar style={`--atraso:${i * 0.08}s`}>
+            <span class="resumo__valor" data-contador={n.valor} data-meses={n.meses ? '' : undefined}>
+              {n.valor}
+            </span>
+            <span class="resumo__legenda">{n.texto}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .resumo__texto {
+    max-width: 30ch;
+    font-family: var(--fonte-titulo);
+    font-weight: 620;
+    font-size: clamp(1.625rem, 1rem + 2.9vw, 3.5rem);
+    line-height: 1.14;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 1024px) {
+    .resumo__texto {
+      max-width: 26ch;
+    }
+  }
+
+  /* Texto que acende palavra por palavra conforme a leitura avança (sem JS) */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .resumo__texto span {
+        animation: acende linear both;
+        animation-timeline: view();
+        animation-range: cover 18% cover 42%;
+      }
+    }
+  }
+
+  @keyframes acende {
+    from {
+      color: rgb(12 15 14 / 0.2);
+    }
+  }
+
+  .resumo__numeros {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(56px, 8vw, 112px);
+    border-top: 1px solid var(--linha-escura);
+  }
+
+  .resumo__numeros li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 20px;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--linha-escura);
+  }
+
+  .resumo__valor {
+    font-family: var(--fonte-titulo);
+    font-weight: 800;
+    font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    min-width: 1.5ch;
+  }
+
+  .resumo__legenda {
+    color: var(--texto-escuro-2);
+    max-width: 22em;
+    line-height: 1.4;
+  }
+
+  @media (min-width: 768px) {
+    .resumo__numeros {
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--linha-escura);
+    }
+
+    .resumo__numeros li {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 28px 24px 8px 0;
+      border-bottom: 0;
+    }
+
+    .resumo__numeros li + li {
+      border-left: 1px solid var(--linha-escura);
+      padding-left: 24px;
+    }
+  }
+</style>

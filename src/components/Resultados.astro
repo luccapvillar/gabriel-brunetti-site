@@ -1,0 +1,320 @@
+---
+import Foto from './Foto.astro';
+import Rotulo from './Rotulo.astro';
+import { resultados, campeonatos } from '../data/gabriel';
+---
+
+<section class="resultados claro secao" id="resultados" aria-labelledby="titulo-resultados">
+  <div class="conteiner">
+    <Rotulo numero="04" nome="Resultados" />
+
+    <div class="resultados__topo">
+      <h2 class="resultados__destaque" id="titulo-resultados">
+        <span class="resultados__grande" aria-hidden="true">3× 2º</span>
+        <span class="resultados__frase">Três segundos lugares no BKS</span>
+      </h2>
+      <p class="lead texto-2 resultados__lead">
+        Na 2ª e na 3ª etapa, no Kartódromo Ayrton Senna; na 5ª, no Kartódromo Brasília Kart. As três em Brasília.
+      </p>
+    </div>
+
+    <div class="folha" data-revelar>
+      <div class="folha__cabeca mono">
+        <span>Folha de resultados</span>
+        <span>BKS · Kart</span>
+      </div>
+      <table>
+        <caption class="visualmente-oculto">Resultados de destaque de Gabriel Brunetti no BKS</caption>
+        <thead class="mono">
+          <tr>
+            <th scope="col">Pos.</th>
+            <th scope="col">Etapa</th>
+            <th scope="col">Local</th>
+            <th scope="col" class="folha__piloto">Piloto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            resultados.map((r) => (
+              <tr>
+                <td class="folha__pos">
+                  <span>P{r.posicao}</span>
+                </td>
+                <th scope="row">
+                  {r.etapa}
+                  <span class="mono">{r.campeonato}</span>
+                </th>
+                <td>
+                  {r.local}
+                  <span class="mono">{r.cidade}</span>
+                </td>
+                <td class="folha__piloto">
+                  <span class="placa placa--mini" aria-hidden="true">33</span> G. Brunetti
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <figure class="resultados__faixa" data-faixa>
+    <Foto
+      nome="lateral-movimento"
+      alt="Kart 33 de Gabriel em movimento, de lado, com o fundo borrado pela velocidade e a placa “33 F4J” visível."
+      sizes="100vw"
+    />
+    <figcaption class="mono">Foto: BC51 Photos</figcaption>
+  </figure>
+
+  <div class="conteiner">
+    <dl class="campeonatos">
+      <div data-revelar>
+        <dt class="mono">Temporada atual</dt>
+        {campeonatos.atuais.map((c) => <dd>{c}</dd>)}
+      </div>
+      <div data-revelar style="--atraso:0.08s">
+        <dt class="mono">Já disputados</dt>
+        {campeonatos.disputados.map((c) => <dd>{c}</dd>)}
+      </div>
+      <div data-revelar style="--atraso:0.16s">
+        <dt class="mono">Categoria</dt>
+        <dd>Kart F400 Júnior</dd>
+        <dd class="campeonatos__nota texto-2">“F4J” na placa é a sigla da categoria.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .resultados__topo {
+    display: grid;
+    gap: 24px;
+    align-items: end;
+  }
+
+  .resultados__destaque {
+    display: grid;
+    gap: 8px;
+  }
+
+  .resultados__grande {
+    font-family: var(--fonte-titulo);
+    font-weight: 850;
+    font-size: clamp(5rem, 2rem + 13vw, 13rem);
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+
+  .resultados__frase {
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    letter-spacing: -0.01em;
+  }
+
+  .resultados__lead {
+    max-width: 26em;
+  }
+
+  /* ---------- Folha de cronometragem ---------- */
+
+  .folha {
+    margin-top: clamp(48px, 6vw, 88px);
+    border-top: 2px solid var(--asfalto);
+  }
+
+  .folha__cabeca {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    font-size: 0.6875rem;
+    color: var(--texto-escuro-2);
+    border-bottom: 1px solid var(--linha-escura);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  thead th {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--texto-escuro-2);
+    padding: 12px 16px 12px 0;
+    border-bottom: 1px solid var(--linha-escura);
+  }
+
+  tbody th,
+  tbody td {
+    padding: 18px 16px 18px 0;
+    border-bottom: 1px solid var(--linha-escura);
+    vertical-align: top;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  tbody th {
+    white-space: nowrap;
+  }
+
+  tbody .mono {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--texto-escuro-2);
+  }
+
+  .folha__pos {
+    width: 1%;
+    padding-right: clamp(16px, 3vw, 48px);
+  }
+
+  .folha__pos span {
+    display: inline-block;
+    font-family: var(--fonte-mono);
+    font-weight: 600;
+    font-size: 1.125rem;
+    padding: 4px 10px;
+    border-radius: 2px;
+    background: var(--asfalto);
+    color: var(--osso);
+  }
+
+  .folha__piloto {
+    display: none;
+  }
+
+  .placa--mini {
+    font-size: 11px;
+    vertical-align: -2px;
+    margin-right: 6px;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s;
+  }
+
+  tbody tr:hover {
+    background: var(--osso-2);
+  }
+
+  @media (min-width: 768px) {
+    .resultados__topo {
+      grid-template-columns: auto 1fr;
+      gap: clamp(32px, 5vw, 96px);
+    }
+
+    .folha__piloto {
+      display: table-cell;
+      white-space: nowrap;
+    }
+
+    tbody th,
+    tbody td {
+      padding-block: 22px;
+      font-size: 1.0625rem;
+    }
+  }
+
+  /* ---------- Faixa da foto em movimento ---------- */
+
+  .resultados__faixa {
+    position: relative;
+    margin-block: clamp(64px, 9vw, 136px);
+    overflow: hidden;
+    height: clamp(260px, 42vw, 640px);
+  }
+
+  .resultados__faixa :global(picture),
+  .resultados__faixa :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 60%;
+  }
+
+  .resultados__faixa figcaption {
+    position: absolute;
+    right: var(--margem);
+    bottom: 14px;
+    font-size: 0.6875rem;
+    color: var(--osso);
+    text-shadow: 0 1px 8px rgb(0 0 0 / 0.6);
+  }
+
+  /* O kart foi fotografado em "panning": a foto desliza na mesma direção ao rolar */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .resultados__faixa :global(picture) {
+        width: 112%;
+        animation: desliza linear both;
+        animation-timeline: view();
+      }
+    }
+  }
+
+  @keyframes desliza {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-10.7%);
+    }
+  }
+
+  /* ---------- Campeonatos ---------- */
+
+  .campeonatos {
+    display: grid;
+    border-top: 1px solid var(--linha-escura);
+  }
+
+  .campeonatos > div {
+    padding-block: 24px;
+    border-bottom: 1px solid var(--linha-escura);
+  }
+
+  .campeonatos dt {
+    color: var(--texto-escuro-2);
+    font-size: 0.75rem;
+    margin-bottom: 12px;
+  }
+
+  .campeonatos dd {
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
+    line-height: 1.25;
+  }
+
+  .campeonatos dd.campeonatos__nota {
+    font-family: var(--fonte-texto);
+    font-weight: 400;
+    font-size: 0.9375rem;
+    margin-top: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .campeonatos {
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--linha-escura);
+    }
+
+    .campeonatos > div {
+      border-bottom: 0;
+      padding-right: 24px;
+    }
+
+    .campeonatos > div + div {
+      border-left: 1px solid var(--linha-escura);
+      padding-left: 24px;
+    }
+  }
+</style>

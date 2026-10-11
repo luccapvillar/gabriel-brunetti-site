@@ -1,0 +1,118 @@
+---
+const ano = new Date().getFullYear();
+---
+
+<footer class="rodape">
+  <div class="conteiner rodape__grade">
+    <a class="rodape__marca" href="#topo">
+      <span class="placa" aria-hidden="true">33</span>
+      <span>
+        <strong>Gabriel Brunetti</strong>
+        <span class="mono">Kart F400 Júnior · Dibo Racing</span>
+      </span>
+    </a>
+    <p class="rodape__creditos texto-2">
+      Fotos com crédito indicado: BC51 Photos.
+    </p>
+    <p class="rodape__direitos mono texto-2">© {ano} Gabriel Lima Brunetti · Site oficial</p>
+    <a class="rodape__topo mono" href="#topo">Voltar ao topo ↑</a>
+  </div>
+</footer>
+
+<a class="cta-flutuante botao" href="#parcerias" data-cta-flutuante>Patrocínio</a>
+
+<style>
+  .rodape {
+    padding-block: 48px max(48px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--linha-clara);
+  }
+
+  .rodape__grade {
+    display: grid;
+    gap: 24px;
+  }
+
+  .rodape__marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .rodape__marca strong {
+    display: block;
+    font-family: var(--fonte-titulo);
+    text-transform: uppercase;
+    font-weight: 750;
+    font-size: 0.9375rem;
+  }
+
+  .rodape__marca .mono {
+    font-size: 0.6875rem;
+    color: var(--texto-claro-2);
+  }
+
+  .rodape__creditos {
+    font-size: 0.875rem;
+  }
+
+  .rodape__direitos {
+    font-size: 0.6875rem;
+    text-transform: none;
+  }
+
+  .rodape__topo {
+    justify-self: start;
+    text-decoration: none;
+    font-size: 0.75rem;
+    padding-block: 12px;
+  }
+
+  @media (min-width: 900px) {
+    .rodape__grade {
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px 48px;
+    }
+
+    .rodape__direitos {
+      grid-column: 1 / 3;
+    }
+
+    .rodape__topo {
+      grid-row: 1;
+      grid-column: 3;
+    }
+  }
+
+  /* CTA flutuante no celular: aparece depois da abertura e some perto do contato */
+  .cta-flutuante {
+    position: fixed;
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 40;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+    opacity: 0;
+    translate: 0 16px;
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      opacity 0.35s var(--curva),
+      translate 0.35s var(--curva),
+      visibility 0s 0.35s;
+  }
+
+  :global(.cta-visivel) .cta-flutuante {
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  @media (min-width: 1100px) {
+    .cta-flutuante {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,172 @@
+---
+import Rotulo from './Rotulo.astro';
+
+const rota = [
+  { quando: 'Agora', titulo: 'Evoluir como piloto', detalhe: 'F400 Júnior, Campeonato Brasiliense e Campeonato Brasileiro' },
+  { quando: 'Próximo', titulo: 'Competir em diferentes estados do Brasil', detalhe: '' },
+  { quando: 'Longo prazo', titulo: 'Stock Car', detalhe: '' },
+];
+---
+
+<section class="proximo claro secao" id="proximo-passo" aria-labelledby="titulo-proximo">
+  <div class="conteiner">
+    <Rotulo numero="07" nome="Próximo passo" />
+    <h2 class="h2 proximo__titulo" id="titulo-proximo">
+      O objetivo de agora é evoluir como piloto. <span>O de longo prazo tem nome: Stock Car.</span>
+    </h2>
+
+    <ol class="rota" data-rota>
+      {
+        rota.map((r, i) => (
+          <li class:list={['rota__ponto', i === rota.length - 1 && 'rota__ponto--fim']} data-revelar style={`--atraso:${i * 0.12}s`}>
+            <span class="rota__marco" aria-hidden="true" />
+            <p class="mono rota__quando">{r.quando}</p>
+            <p class="rota__titulo">{r.titulo}</p>
+            {r.detalhe && <p class="rota__detalhe texto-2">{r.detalhe}</p>}
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="proximo__horizonte" aria-hidden="true"><span>Stock Car</span></p>
+  </div>
+</section>
+
+<style>
+  .proximo {
+    overflow: hidden;
+  }
+
+  .proximo__titulo {
+    max-width: 22ch;
+  }
+
+  .proximo__titulo span {
+    color: var(--verde-texto);
+  }
+
+  .rota {
+    position: relative;
+    display: grid;
+    gap: 40px;
+    margin-top: clamp(56px, 8vw, 112px);
+    padding-left: 40px;
+  }
+
+  /* A mesma linha da trajetória continua até a Stock Car */
+  .rota::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(var(--asfalto), var(--asfalto) 60%, var(--verde-texto));
+  }
+
+  .rota__ponto {
+    position: relative;
+  }
+
+  .rota__marco {
+    position: absolute;
+    left: -40px;
+    top: 2px;
+    width: 15px;
+    height: 15px;
+    border-radius: 999px;
+    background: var(--osso);
+    border: 1px solid var(--asfalto);
+  }
+
+  .rota__ponto:first-child .rota__marco {
+    background: var(--asfalto);
+  }
+
+  .rota__ponto--fim .rota__marco {
+    background: var(--verde);
+    border-color: var(--verde);
+    box-shadow: 0 0 0 5px rgb(23 163 90 / 0.18);
+  }
+
+  .rota__quando {
+    color: var(--texto-escuro-2);
+    margin-bottom: 8px;
+  }
+
+  .rota__titulo {
+    font-family: var(--fonte-titulo);
+    font-weight: 720;
+    font-size: clamp(1.375rem, 1.1rem + 1.1vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    max-width: 16em;
+  }
+
+  .rota__detalhe {
+    margin-top: 8px;
+    font-size: 0.9375rem;
+    max-width: 22em;
+  }
+
+  /* "Stock Car" no horizonte: só o contorno; ao rolar, o verde preenche da esquerda para a direita */
+  .proximo__horizonte {
+    margin-top: clamp(56px, 8vw, 120px);
+    font-family: var(--fonte-titulo);
+    font-weight: 850;
+    font-size: calc(min(100vw - 2 * var(--margem), var(--largura)) / 6.75);
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-left: -0.03em;
+  }
+
+  .proximo__horizonte span {
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(12 15 14 / 0.3);
+    background: linear-gradient(90deg, var(--verde) 50%, transparent 50%) 100% 0 / 200% 100% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .proximo__horizonte span {
+        animation: preenche-horizonte linear both;
+        animation-timeline: view();
+        animation-range: entry 40% cover 60%;
+      }
+    }
+  }
+
+  @keyframes preenche-horizonte {
+    to {
+      background-position: 0 0;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .rota {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      padding-left: 0;
+      padding-top: 44px;
+    }
+
+    .rota::before {
+      left: 0;
+      right: 0;
+      top: 7px;
+      bottom: auto;
+      width: auto;
+      height: 1px;
+      background: linear-gradient(90deg, var(--asfalto), var(--asfalto) 60%, var(--verde-texto));
+    }
+
+    .rota__marco {
+      left: 0;
+      top: -44px;
+    }
+  }
+</style>

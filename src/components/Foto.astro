@@ -1,0 +1,35 @@
+---
+/**
+ * Foto responsiva: <picture> com AVIF e WebP, srcset gerado por `npm run midia`,
+ * largura e altura reais (sem CLS) e carregamento preguiçoso fora da abertura.
+ */
+import { imagem } from '../data/imagens';
+
+interface Props {
+  nome: string;
+  alt: string;
+  sizes?: string;
+  class?: string;
+  prioridade?: boolean;
+  [atributo: string]: unknown;
+}
+
+const { nome, alt, sizes = '100vw', class: classe, prioridade = false, ...resto } = Astro.props;
+const img = await imagem(nome);
+---
+
+<picture class={classe}>
+  <source type="image/avif" srcset={img.srcset('avif')} sizes={sizes} />
+  <img
+    src={img.src(1024)}
+    srcset={img.srcset('webp')}
+    sizes={sizes}
+    width={img.largura}
+    height={img.altura}
+    alt={alt}
+    loading={prioridade ? 'eager' : 'lazy'}
+    decoding={prioridade ? 'sync' : 'async'}
+    fetchpriority={prioridade ? 'high' : undefined}
+    {...resto}
+  />
+</picture>

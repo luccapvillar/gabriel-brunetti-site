@@ -1,0 +1,291 @@
+---
+/**
+ * Como ele pensa a corrida + filme. As citações funcionam como capítulos:
+ * "Ouvir no filme" leva ao player e toca a partir daquele ponto.
+ */
+import Rotulo from './Rotulo.astro';
+import { imagem } from '../data/imagens';
+import { capitulos, formatarTempo } from '../data/gabriel';
+
+const poster = await imagem('filme-poster');
+---
+
+<section class="filme secao" id="filme" aria-labelledby="titulo-filme">
+  <div class="conteiner">
+    <div class="filme__topo">
+      <Rotulo numero="06" nome="Como ele pensa" />
+      <h2 class="h2" id="titulo-filme">Como Gabriel pensa uma corrida</h2>
+      <p class="lead texto-2 filme__lead">
+        A referência dele é o Verstappen, principalmente pela mentalidade. No filme, Gabriel explica com as próprias
+        palavras o que passa pela cabeça dele num fim de semana de corrida.
+      </p>
+    </div>
+
+    <div class="filme__grade">
+      <div class="player" data-player>
+        <div class="player__tela">
+          <video
+            controls
+            playsinline
+            data-com-controles
+            preload="none"
+            poster={poster.src(1024)}
+            width="1024"
+            height="576"
+            aria-label="Filme: Do box à bandeirada"
+            data-filme
+          >
+            <source src="/video/gabriel-brunetti-filme.mp4" type="video/mp4" />
+            <a href="/video/gabriel-brunetti-filme.mp4">Baixar o filme (MP4)</a>
+          </video>
+          <button class="player__capa" type="button" data-filme-play>
+            <span class="player__play" aria-hidden="true">
+              <svg viewBox="0 0 16 16"><path d="M4 2.5v11L13 8z" /></svg>
+            </span>
+            <span class="player__info">
+              <span class="player__titulo">Do box à bandeirada</span>
+              <span class="mono">2:05 · Assistir com som</span>
+            </span>
+          </button>
+        </div>
+        <div class="player__regua" aria-hidden="true">
+          <span class="player__progresso" data-filme-progresso />
+          {capitulos.map((c) => <span class="player__marca" style={`left:${(c.inicio / 125) * 100}%`} />)}
+        </div>
+      </div>
+
+      <ol class="capitulos">
+        {
+          capitulos.map((c, i) => (
+            <li class="capitulo" id={`capitulo-${c.id}`} data-capitulo={c.inicio} data-revelar style={`--atraso:${i * 0.08}s`}>
+              <p class="capitulo__tempo mono">
+                <span>{formatarTempo(c.inicio)}</span> {c.titulo}
+              </p>
+              <blockquote class="capitulo__citacao">
+                <p>“{c.citacao}”</p>
+              </blockquote>
+              <p class="capitulo__ligacao mono">{c.ligacao}</p>
+              <button class="capitulo__ouvir" type="button" data-tocar={c.inicio}>
+                <span class="capitulo__icone" aria-hidden="true">▶</span>
+                Ouvir no filme <span class="mono">{formatarTempo(c.inicio)}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .filme {
+    background: var(--asfalto-2);
+  }
+
+  .filme__topo {
+    max-width: 52rem;
+  }
+
+  .filme__lead {
+    margin-top: clamp(20px, 3vw, 32px);
+    max-width: 36em;
+  }
+
+  .filme__grade {
+    display: grid;
+    gap: clamp(40px, 5vw, 72px);
+    margin-top: clamp(48px, 6vw, 88px);
+    align-items: start;
+  }
+
+  /* ---------- Player ---------- */
+
+  .player__tela {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: var(--raio);
+    overflow: hidden;
+  }
+
+  .player__tela video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .player__capa {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    padding: clamp(16px, 3vw, 32px);
+    text-align: left;
+    background: linear-gradient(0deg, rgb(12 15 14 / 0.75), rgb(12 15 14 / 0) 55%);
+  }
+
+  /* Sem JS, a capa some e ficam os controles nativos do vídeo */
+  .player__capa[hidden],
+  :global(html:not(.js)) .player__capa {
+    display: none;
+  }
+
+  .player__play {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: clamp(56px, 7vw, 80px);
+    aspect-ratio: 1;
+    border-radius: 999px;
+    background: var(--verde);
+    transition:
+      scale 0.3s var(--curva),
+      background-color 0.3s;
+  }
+
+  .player__play svg {
+    width: 36%;
+    fill: var(--asfalto);
+    margin-left: 6%;
+  }
+
+  .player__capa:hover .player__play {
+    scale: 1.06;
+    background: var(--verde-claro);
+  }
+
+  .player__info {
+    display: grid;
+    gap: 4px;
+  }
+
+  .player__titulo {
+    font-family: var(--fonte-titulo);
+    font-weight: 750;
+    font-size: clamp(1.125rem, 0.9rem + 1vw, 1.75rem);
+    line-height: 1.1;
+  }
+
+  .player__info .mono {
+    color: var(--texto-claro-2);
+    font-size: 0.75rem;
+  }
+
+  /* Régua com a posição dos capítulos no filme */
+  .player__regua {
+    position: relative;
+    height: 2px;
+    margin-top: 16px;
+    background: var(--linha-clara);
+  }
+
+  .player__marca {
+    position: absolute;
+    top: -4px;
+    width: 2px;
+    height: 10px;
+    background: var(--verde-claro);
+    z-index: 1;
+  }
+
+  .player__progresso {
+    position: absolute;
+    inset: 0;
+    background: var(--osso);
+    transform-origin: left;
+    transform: scaleX(var(--progresso, 0));
+  }
+
+  /* ---------- Capítulos ---------- */
+
+  .capitulo {
+    padding-block: 28px;
+    border-top: 1px solid var(--linha-clara);
+    transition: opacity 0.4s;
+  }
+
+  .capitulo:last-child {
+    border-bottom: 1px solid var(--linha-clara);
+  }
+
+  :global(.tocando) .capitulo:not(.atual) {
+    opacity: 0.55;
+  }
+
+  .capitulo__tempo {
+    color: var(--texto-claro-2);
+    margin-bottom: 14px;
+  }
+
+  .capitulo__tempo span {
+    color: var(--verde-claro);
+    margin-right: 8px;
+  }
+
+  .capitulo__citacao {
+    font-family: var(--fonte-titulo);
+    font-weight: 500;
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    line-height: 1.38;
+    letter-spacing: -0.01em;
+  }
+
+  .capitulo__ligacao {
+    margin-top: 14px;
+    font-size: 0.75rem;
+    color: var(--texto-claro-2);
+    text-transform: none;
+    letter-spacing: 0.01em;
+  }
+
+  .capitulo__ouvir {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    margin-top: 12px;
+    font-weight: 600;
+  }
+
+  .capitulo__ouvir .mono {
+    color: var(--verde-claro);
+  }
+
+  .capitulo__icone {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid var(--linha-clara);
+    font-size: 0.6rem;
+    padding-left: 2px;
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+
+  .capitulo__ouvir:hover .capitulo__icone,
+  .capitulo.atual .capitulo__icone {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: var(--asfalto);
+  }
+
+  @media (min-width: 1024px) {
+    .filme__grade {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+
+    .player {
+      position: sticky;
+      top: calc(var(--cabecalho) + 32px);
+    }
+
+    .capitulo:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+  }
+</style>

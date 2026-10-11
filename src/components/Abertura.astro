@@ -1,0 +1,407 @@
+---
+/**
+ * Abertura: foto → "33" gigante → recorte do piloto por cima.
+ * O número fica entre a foto e o recorte, então parece estar atrás do Gabriel,
+ * com o capacete entre os dois "3". Foto e recorte têm o mesmo tamanho e enquadramento.
+ *
+ * Coordenadas em pixels da foto original (a-frente.jpg, 2560×1706):
+ *   capacete: x 1222–1626 (centro ≈ 1424), y 180–560.
+ * No celular usa o recorte 3:4 gerado por `npm run midia` (x 700, largura 1280).
+ */
+import { imagem } from '../data/imagens';
+import { textoEmCurvas } from '../../scripts/texto-em-curvas.mjs';
+
+const foto = await imagem('a-frente');
+const recorte = await imagem('a-frente-recorte');
+const fotoCel = await imagem('a-frente-celular');
+const recorteCel = await imagem('a-frente-recorte-celular');
+
+const numero = await textoEmCurvas('33', { peso: 900, tamanho: 100 });
+const c = numero.caixa;
+const viewBox = `${c.x.toFixed(2)} ${c.y.toFixed(2)} ${c.largura.toFixed(2)} ${c.altura.toFixed(2)}`;
+const proporcao = c.altura / c.largura;
+
+// Posição e tamanho do "33" em frações do palco (largura do número / centro x / topo y).
+// No desktop o número começa abaixo do cabeçalho; no celular a foto já começa abaixo dele.
+const desktop = { largura: 1440 / 2560, centro: 1424 / 2560, topo: 190 / 1706, foco: 0.54 };
+const celular = { largura: 1110 / 1280, centro: (1424 - 700) / 1280, topo: 60 / 1706, foco: 0.5 };
+
+const estilo = [
+  `--d-largura:${desktop.largura}`,
+  `--d-centro:${desktop.centro}`,
+  `--d-topo:${desktop.topo}`,
+  `--d-foco:${desktop.foco}`,
+  `--c-largura:${celular.largura}`,
+  `--c-centro:${celular.centro}`,
+  `--c-topo:${celular.topo}`,
+  `--c-foco:${celular.foco}`,
+  `--n-proporcao:${proporcao}`,
+].join(';');
+
+const SIZES_DESKTOP = '(min-width: 1024px) 70vw, 100vw';
+const DESKTOP = '(min-width: 1024px)';
+
+const dados = [
+  { rotulo: 'Categoria', valor: 'Kart F400 Júnior' },
+  { rotulo: 'Temporada', valor: 'Brasiliense e Brasileiro' },
+  { rotulo: 'Destaque', valor: '3× 2º lugar no BKS' },
+  { rotulo: 'Objetivo', valor: 'Stock Car' },
+];
+---
+
+<section class="abertura" id="topo" aria-labelledby="titulo-abertura" style={estilo} data-abertura>
+  <div class="abertura__painel">
+    <div class="palco" data-palco>
+      <picture class="camada camada--foto">
+        <source media={DESKTOP} type="image/avif" srcset={foto.srcset('avif')} sizes={SIZES_DESKTOP} width={foto.largura} height={foto.altura} />
+        <source media={DESKTOP} type="image/webp" srcset={foto.srcset('webp')} sizes={SIZES_DESKTOP} width={foto.largura} height={foto.altura} />
+        <source type="image/avif" srcset={fotoCel.srcset('avif')} sizes="100vw" width={fotoCel.largura} height={fotoCel.altura} />
+        <img
+          src={fotoCel.src(1024)}
+          srcset={fotoCel.srcset('webp')}
+          sizes="100vw"
+          width={fotoCel.largura}
+          height={fotoCel.altura}
+          alt="Gabriel Brunetti pilotando o kart número 33, verde e branco, à frente de um adversário."
+          fetchpriority="high"
+          decoding="sync"
+        />
+      </picture>
+
+      <div class="numero" aria-hidden="true" data-numero>
+        <svg viewBox={viewBox} preserveAspectRatio="xMidYMid meet" focusable="false"><path d={numero.d} /></svg>
+      </div>
+
+      <picture class="camada camada--recorte" aria-hidden="true">
+        <source media={DESKTOP} type="image/avif" srcset={recorte.srcset('avif')} sizes={SIZES_DESKTOP} width={recorte.largura} height={recorte.altura} />
+        <source media={DESKTOP} type="image/webp" srcset={recorte.srcset('webp')} sizes={SIZES_DESKTOP} width={recorte.largura} height={recorte.altura} />
+        <source type="image/avif" srcset={recorteCel.srcset('avif')} sizes="100vw" width={recorteCel.largura} height={recorteCel.altura} />
+        <img src={recorteCel.src(1024)} srcset={recorteCel.srcset('webp')} sizes="100vw" width={recorteCel.largura} height={recorteCel.altura} alt="" decoding="sync" />
+      </picture>
+    </div>
+  </div>
+
+  <div class="abertura__texto">
+    <p class="mono abertura__sobre">Piloto · Kart F400 Júnior · Nº 33</p>
+    <h1 class="abertura__titulo titulo" id="titulo-abertura">
+      <span class="linha"><span>Gabriel</span></span>
+      <span class="linha"><span>Brunetti</span></span>
+    </h1>
+    <p class="abertura__lead lead">
+      14 anos, de Valparaíso de Goiás. Corre na F400 Júnior com a equipe Dibo Racing, disputa o Campeonato Brasiliense e o
+      Campeonato Brasileiro e tem um objetivo de longo prazo: a Stock Car.
+    </p>
+    <div class="abertura__botoes">
+      <a class="botao" href="#trajetoria">Ver a trajetória <span class="seta" aria-hidden="true">→</span></a>
+      <a class="botao botao--linha" href="#parcerias">Parcerias e patrocínio</a>
+    </div>
+  </div>
+
+  <dl class="abertura__dados">
+    {
+      dados.map((d) => (
+        <div>
+          <dt class="mono">{d.rotulo}</dt>
+          <dd>{d.valor}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  .abertura {
+    --px: 0;
+    --py: 0;
+    position: relative;
+    display: grid;
+    background: var(--asfalto);
+  }
+
+  /* ---------- Painel da foto (palco com as 3 camadas) ---------- */
+
+  .abertura__painel {
+    --ar: 0.75; /* proporção do palco (largura / altura) */
+    --largura: var(--c-largura);
+    --centro: var(--c-centro);
+    --topo: var(--c-topo);
+    --foco: var(--c-foco);
+    position: relative;
+    overflow: hidden;
+    container-type: size;
+    aspect-ratio: 3 / 4;
+    max-height: 80svh;
+    width: 100%;
+    margin-top: var(--cabecalho);
+    background: var(--asfalto-2);
+  }
+
+  .palco {
+    /* "cover" feito à mão para que o número continue preso às coordenadas da foto */
+    --w: max(100cqw, 100cqh * var(--ar));
+    --h: calc(var(--w) / var(--ar));
+    position: absolute;
+    width: var(--w);
+    height: var(--h);
+    left: clamp(100cqw - var(--w), 50cqw - var(--foco) * var(--w), 0px);
+    top: clamp(100cqh - var(--h), 50cqh - 0.42 * var(--h), 0px);
+    translate: calc(var(--px) * -6px) calc(var(--py) * -4px);
+    transition: translate 0.6s var(--curva);
+  }
+
+  .camada,
+  .camada img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .camada img {
+    object-fit: cover;
+  }
+
+  /* Escurece um pouco a foto (só ela) para o número e o piloto recortado saltarem */
+  .camada--foto::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(12 15 14 / 0.35), rgb(12 15 14 / 0) 40%),
+      rgb(12 15 14 / 0.22);
+  }
+
+  .numero {
+    position: absolute;
+    width: calc(var(--largura) * 100%);
+    left: calc(var(--centro) * 100%);
+    top: calc(var(--topo) * 100%);
+    translate: calc(-50% + var(--px) * 10px) calc(var(--py) * 6px);
+    transition: translate 0.6s var(--curva);
+  }
+
+  .numero svg {
+    width: 100%;
+    height: auto;
+    fill: var(--osso);
+    overflow: visible;
+  }
+
+  /* ---------- Texto ---------- */
+
+  .abertura__texto {
+    padding: clamp(28px, 6vw, 48px) var(--margem) clamp(40px, 8vw, 64px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .abertura__sobre {
+    color: var(--verde-claro);
+    margin-bottom: clamp(16px, 2.5vw, 28px);
+  }
+
+  .abertura__titulo {
+    font-size: clamp(3rem, 14.5vw, 7.25rem);
+    font-weight: 820;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+
+  .linha {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.04em;
+  }
+
+  .linha > span {
+    display: block;
+  }
+
+  .abertura__lead {
+    max-width: 34em;
+    margin-top: clamp(20px, 3vw, 32px);
+    color: var(--texto-claro-2);
+  }
+
+  .abertura__botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: clamp(24px, 4vw, 40px);
+  }
+
+  /* ---------- Faixa de dados ---------- */
+
+  .abertura__dados {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--linha-clara);
+  }
+
+  .abertura__dados > div {
+    padding: 18px var(--margem) 20px;
+    border-bottom: 1px solid var(--linha-clara);
+  }
+
+  .abertura__dados > div:nth-child(odd) {
+    border-right: 1px solid var(--linha-clara);
+  }
+
+  .abertura__dados dt {
+    color: var(--texto-claro-2);
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+  }
+
+  .abertura__dados dd {
+    font-family: var(--fonte-titulo);
+    font-weight: 650;
+    font-size: clamp(0.9375rem, 0.85rem + 0.4vw, 1.125rem);
+    line-height: 1.25;
+  }
+
+  /* Tablet em pé: a foto não precisa ocupar a altura toda */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .abertura__painel {
+      aspect-ratio: 4 / 4;
+      max-height: 72svh;
+    }
+  }
+
+  /* ---------- Desktop: tela dividida ---------- */
+
+  @media (min-width: 1024px) {
+    .abertura {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-rows: 1fr auto;
+      min-height: max(640px, 100svh);
+    }
+
+    .abertura__painel {
+      --ar: 1.5;
+      --largura: var(--d-largura);
+      --centro: var(--d-centro);
+      --topo: var(--d-topo);
+      --foco: var(--d-foco);
+      grid-column: 2;
+      grid-row: 1;
+      aspect-ratio: auto;
+      max-height: none;
+      height: 100%;
+      margin-top: 0;
+    }
+
+    .abertura__texto {
+      grid-column: 1;
+      grid-row: 1;
+      justify-content: center;
+      padding-top: calc(var(--cabecalho) + 40px);
+      padding-bottom: 56px;
+      padding-right: clamp(24px, 3vw, 56px);
+    }
+
+    .abertura__titulo {
+      font-size: clamp(3.5rem, 6.6vw, 8.5rem);
+    }
+
+    .abertura__dados {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .abertura__dados > div {
+      border-bottom: 0;
+      border-right: 1px solid var(--linha-clara);
+      padding-block: 22px 24px;
+    }
+
+    .abertura__dados > div:last-child {
+      border-right: 0;
+    }
+  }
+
+  /* ---------- Movimento de entrada e de scroll ---------- */
+
+  @media (prefers-reduced-motion: no-preference) {
+    .palco {
+      animation: assenta 1.6s var(--curva) both;
+    }
+
+    .numero svg {
+      animation: sobe 1.2s 0.25s var(--curva) both;
+    }
+
+    .linha > span {
+      animation: mascara 1s var(--curva) both;
+    }
+
+    .linha + .linha > span {
+      animation-delay: 0.08s;
+    }
+
+    .abertura__sobre,
+    .abertura__lead,
+    .abertura__botoes {
+      animation: aparece 0.9s 0.35s var(--curva) both;
+    }
+
+    @supports (animation-timeline: view()) {
+      .camada,
+      .numero {
+        animation: var(--anim-scroll) linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 100%;
+      }
+
+      .camada {
+        --anim-scroll: desce-foto;
+      }
+
+      .numero {
+        --anim-scroll: desce-numero;
+      }
+    }
+  }
+
+  @keyframes assenta {
+    from {
+      scale: 1.06;
+    }
+  }
+
+  @keyframes sobe {
+    from {
+      transform: translateY(22%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes mascara {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  @keyframes aparece {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  /* Camadas em velocidades diferentes ao rolar: o número fica para trás */
+  @keyframes desce-foto {
+    to {
+      transform: translateY(14%);
+    }
+  }
+
+  @keyframes desce-numero {
+    to {
+      transform: translateY(30%);
+    }
+  }
+</style>

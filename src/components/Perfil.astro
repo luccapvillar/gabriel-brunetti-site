@@ -1,0 +1,344 @@
+---
+import Foto from './Foto.astro';
+import Rotulo from './Rotulo.astro';
+import { imagem } from '../data/imagens';
+import { capitulos, formatarTempo } from '../data/gabriel';
+
+const poster = await imagem('perfil-loop-poster');
+const lideranca = capitulos.find((c) => c.id === 'na-lideranca')!;
+const largada = capitulos.find((c) => c.id === 'antes-da-largada')!;
+
+const ficha = [
+  ['Nome', 'Gabriel Lima Brunetti'],
+  ['Idade', '14 anos'],
+  ['Cidade', 'Valparaíso de Goiás (GO)'],
+  ['Número', '33'],
+  ['Categoria', 'Kart F400 Júnior'],
+  ['Equipe', 'Dibo Racing'],
+  ['Treina desde', 'Outubro de 2025'],
+  ['Referência', 'Max Verstappen'],
+];
+---
+
+<section class="perfil secao" id="perfil" aria-labelledby="titulo-perfil">
+  <div class="conteiner">
+    <div class="perfil__topo">
+      <figure class="perfil__video" data-revelar>
+        <video
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster={poster.src(460)}
+          width={poster.largura}
+          height={poster.altura}
+          aria-label="Gabriel fechando o macacão antes de entrar na pista"
+          data-loop
+        >
+          <source src="/video/perfil-loop.mp4" type="video/mp4" />
+        </video>
+        <button class="perfil__pausa" type="button" aria-pressed="false" data-loop-botao hidden>
+          <span class="visualmente-oculto" data-loop-rotulo>Pausar vídeo</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pausa" d="M4 3h3v10H4zM9 3h3v10H9z" /><path class="i-play" d="M4 2.5v11L13 8z" /></svg>
+        </button>
+        <figcaption class="mono texto-2">Trecho do filme · vestindo o macacão</figcaption>
+      </figure>
+
+      <div class="perfil__texto">
+        <Rotulo numero="01" nome="Perfil" />
+        <h2 class="h2" id="titulo-perfil">Quem pilota o #33</h2>
+        <p class="lead perfil__lead">
+          Gabriel Lima Brunetti tem 14 anos e é de Valparaíso de Goiás, no Entorno do Distrito Federal. Chegou ao
+          automobilismo pela influência do pai, começou a treinar em outubro de 2025 e hoje corre com a equipe Dibo
+          Racing, acompanhado de perto pelos pais.
+        </p>
+
+        <dl class="ficha">
+          {
+            ficha.map(([termo, valor]) => (
+              <div>
+                <dt>{termo}</dt>
+                <dd>{valor}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+
+    <div class="estilo">
+      <figure class="estilo__foto" data-revelar>
+        <Foto
+          class="estilo__imagem"
+          nome="disputa-235"
+          alt="Gabriel, no kart 33, lado a lado com o kart 235 numa disputa de posição."
+          sizes="(min-width: 1024px) 58vw, 100vw"
+        />
+      </figure>
+      <div class="estilo__texto" data-revelar>
+        <h3 class="mono estilo__rotulo">Estilo de pilotagem</h3>
+        <p class="estilo__frase">
+          Como ele define a própria pilotagem: <strong>limpa e conservadora, com boa noção de ultrapassagem.</strong>
+        </p>
+        <p class="texto-2">
+          No filme, ele fala das duas coisas: onde fazer a ultrapassagem e como conduzir o pelotão na liderança sem
+          levar punição.
+        </p>
+        <div class="estilo__links">
+          <a class="capitulo-link" href={`#capitulo-${largada.id}`} data-tocar={largada.inicio}>
+            <span class="capitulo-link__icone" aria-hidden="true">▶</span>
+            {largada.titulo} <span class="mono">{formatarTempo(largada.inicio)}</span>
+          </a>
+          <a class="capitulo-link" href={`#capitulo-${lideranca.id}`} data-tocar={lideranca.inicio}>
+            <span class="capitulo-link__icone" aria-hidden="true">▶</span>
+            {lideranca.titulo} <span class="mono">{formatarTempo(lideranca.inicio)}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ul class="perfil__pontos">
+      <li data-revelar>
+        <h3 class="mono">Referência</h3>
+        <p class="perfil__ponto-titulo">Max Verstappen</p>
+        <p class="texto-2">Max Verstappen é a principal referência de Gabriel, principalmente pela mentalidade.</p>
+      </li>
+      <li data-revelar style="--atraso:0.08s">
+        <h3 class="mono">Origem</h3>
+        <p class="perfil__ponto-titulo">A influência do pai</p>
+        <p class="texto-2">Foi pelo pai que o automobilismo entrou na vida de Gabriel. Hoje, os pais acompanham o projeto de perto.</p>
+      </li>
+      <li data-revelar style="--atraso:0.16s">
+        <h3 class="mono">Estrutura</h3>
+        <p class="perfil__ponto-titulo">Dibo Racing</p>
+        <p class="texto-2">É a equipe com que Gabriel corre na F400 Júnior, no Campeonato Brasiliense e no Campeonato Brasileiro.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .perfil__topo {
+    display: grid;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .perfil__video {
+    position: relative;
+    max-width: 460px;
+  }
+
+  .perfil__video video {
+    width: 100%;
+    aspect-ratio: 460 / 576;
+    object-fit: cover;
+    background: var(--asfalto-2);
+    border-radius: var(--raio);
+  }
+
+  .perfil__video figcaption {
+    margin-top: 12px;
+    font-size: 0.75rem;
+  }
+
+  .perfil__pausa {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgb(12 15 14 / 0.6);
+    border: 1px solid var(--linha-clara);
+  }
+
+  .perfil__pausa[hidden] {
+    display: none;
+  }
+
+  .perfil__pausa svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--osso);
+  }
+
+  .perfil__pausa .i-play,
+  .perfil__pausa[aria-pressed='true'] .i-pausa {
+    display: none;
+  }
+
+  .perfil__pausa[aria-pressed='true'] .i-play {
+    display: block;
+  }
+
+  .perfil__lead {
+    margin-top: clamp(20px, 3vw, 32px);
+    color: var(--texto-claro-2);
+    max-width: 36em;
+  }
+
+  .ficha {
+    display: grid;
+    margin-top: clamp(32px, 4vw, 48px);
+    border-top: 1px solid var(--linha-clara);
+    font-family: var(--fonte-mono);
+    font-size: 0.875rem;
+  }
+
+  .ficha > div {
+    display: grid;
+    grid-template-columns: minmax(8.5em, 1fr) 2fr;
+    gap: 16px;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--linha-clara);
+  }
+
+  .ficha dt {
+    color: var(--texto-claro-2);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.75rem;
+    padding-top: 0.15em;
+  }
+
+  .ficha dd {
+    color: var(--osso);
+  }
+
+  /* ---------- Estilo ---------- */
+
+  .estilo {
+    display: grid;
+    gap: 32px;
+    margin-top: clamp(80px, 10vw, 160px);
+    align-items: center;
+  }
+
+  .estilo__foto :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: 50% 15%;
+    border-radius: var(--raio);
+  }
+
+  .estilo__rotulo {
+    color: var(--verde-claro);
+    margin-bottom: 16px;
+  }
+
+  .estilo__frase {
+    font-family: var(--fonte-titulo);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+    color: var(--texto-claro-2);
+  }
+
+  .estilo__frase strong {
+    color: var(--osso);
+    font-weight: 760;
+  }
+
+  .estilo__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 24px;
+  }
+
+  .capitulo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .capitulo-link .mono {
+    color: var(--verde-claro);
+  }
+
+  .capitulo-link__icone {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid var(--linha-clara);
+    font-size: 0.6rem;
+    padding-left: 2px;
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+
+  .capitulo-link:hover .capitulo-link__icone {
+    background: var(--verde);
+    border-color: var(--verde);
+    color: var(--asfalto);
+  }
+
+  /* ---------- Referência, origem, estrutura ---------- */
+
+  .perfil__pontos {
+    display: grid;
+    margin-top: clamp(64px, 8vw, 120px);
+    border-top: 1px solid var(--linha-clara);
+  }
+
+  .perfil__pontos li {
+    padding-block: 28px;
+    border-bottom: 1px solid var(--linha-clara);
+  }
+
+  .perfil__pontos h3 {
+    color: var(--texto-claro-2);
+    font-size: 0.75rem;
+  }
+
+  .perfil__ponto-titulo {
+    font-family: var(--fonte-titulo);
+    font-weight: 720;
+    font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
+    line-height: 1.15;
+    margin: 10px 0 10px;
+  }
+
+  @media (min-width: 768px) {
+    .perfil__topo {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+
+    .perfil__video {
+      position: sticky;
+      top: calc(var(--cabecalho) + 24px);
+    }
+
+    .perfil__pontos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .perfil__pontos li {
+      padding-right: 32px;
+    }
+
+    .perfil__pontos li + li {
+      border-left: 1px solid var(--linha-clara);
+      padding-left: 32px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .estilo {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: clamp(40px, 5vw, 96px);
+    }
+  }
+</style>

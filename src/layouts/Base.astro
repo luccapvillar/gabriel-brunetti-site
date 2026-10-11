@@ -1,0 +1,91 @@
+---
+import '../styles/fontes.css';
+import '../styles/global.css';
+import { NOME, NOME_COMPLETO, CATEGORIA, CIDADE, UF, EQUIPE, PATROCINADORA, IDADE, contato } from '../data/gabriel';
+
+interface Props {
+  titulo: string;
+  descricao: string;
+}
+
+const { titulo, descricao } = Astro.props;
+const site = Astro.site;
+// Sem domínio definido (pendência 6), os endereços ficam relativos e o canonical não é gerado.
+const absoluto = (caminho: string) => (site ? new URL(caminho, site).href : caminho);
+const og = absoluto('/og.jpg');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': absoluto('/#gabriel'),
+      name: NOME_COMPLETO,
+      alternateName: NOME,
+      description: `Piloto de ${CATEGORIA}, ${IDADE} anos, de ${CIDADE} (${UF}). Número 33, equipe ${EQUIPE}.`,
+      jobTitle: `Piloto de ${CATEGORIA}`,
+      image: og,
+      ...(site ? { url: site.href } : {}),
+      email: `mailto:${contato.email}`,
+      telephone: '+55-61-99921-8444',
+      homeLocation: {
+        '@type': 'Place',
+        name: `${CIDADE}, ${UF}`,
+        address: { '@type': 'PostalAddress', addressLocality: CIDADE, addressRegion: UF, addressCountry: 'BR' },
+      },
+      memberOf: { '@type': 'SportsTeam', name: EQUIPE, sport: 'Kart' },
+      sponsor: { '@type': 'Organization', name: PATROCINADORA },
+      knowsAbout: ['Kart', CATEGORIA],
+      sameAs: [contato.instagramUrl],
+    },
+    {
+      '@type': 'WebSite',
+      name: `${NOME} #33 — Site oficial`,
+      inLanguage: 'pt-BR',
+      ...(site ? { url: site.href } : {}),
+      about: { '@id': absoluto('/#gabriel') },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <title>{titulo}</title>
+    <meta name="description" content={descricao} />
+    <meta name="theme-color" content="#0C0F0E" />
+    <meta name="color-scheme" content="dark light" />
+    {site && <link rel="canonical" href={site.href} />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="preload" href="/fonts/mona-expandida.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/mona-texto.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={`${NOME} #33`} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Gabriel Brunetti no kart número 33, com o número 33 em tamanho grande atrás dele." />
+    {site && <meta property="og:url" content={site.href} />}
+    <meta property="profile:first_name" content="Gabriel" />
+    <meta property="profile:last_name" content="Brunetti" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    <slot />
+  </body>
+</html>

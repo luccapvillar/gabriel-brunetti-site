@@ -1,0 +1,115 @@
+---
+import Rotulo from './Rotulo.astro';
+import { contato } from '../data/gabriel';
+---
+
+<section class="contato secao" id="contato" aria-labelledby="titulo-contato">
+  <div class="conteiner">
+    <Rotulo nome="Contato" />
+    <h2 class="h2" id="titulo-contato">Patrocínio, imprensa e parcerias</h2>
+
+    <div class="contato__email">
+      <a class="contato__email-link" href={`mailto:${contato.email}`}>{contato.email}</a>
+      <button class="botao botao--linha contato__copiar" type="button" data-copiar={contato.email}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></svg>
+        <span data-copiar-rotulo>Copiar e-mail</span>
+      </button>
+      <p class="visualmente-oculto" aria-live="polite" data-copiar-aviso></p>
+    </div>
+
+    <ul class="contato__canais">
+      <li>
+        <p class="mono">Telefone e WhatsApp</p>
+        <a href={contato.whatsapp} rel="noopener" target="_blank">{contato.telefone}</a>
+        <a class="contato__secundario" href={contato.telefoneLink}>Ligar</a>
+      </li>
+      <li>
+        <p class="mono">Instagram</p>
+        <a href={contato.instagramUrl} rel="noopener" target="_blank">{contato.instagram}</a>
+      </li>
+      <li>
+        <p class="mono">Base</p>
+        <p>Valparaíso de Goiás (GO) · Entorno do DF</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contato__email {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px 32px;
+    margin-top: clamp(40px, 6vw, 80px);
+    padding-bottom: clamp(32px, 4vw, 56px);
+    border-bottom: 1px solid var(--linha-clara);
+  }
+
+  /* Mona Texto: o zero do "098" fica bem diferente de um "O" */
+  .contato__email-link {
+    font-family: var(--fonte-texto);
+    font-weight: 650;
+    font-size: clamp(1.375rem, 0.5rem + 4.4vw, 4.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    background: linear-gradient(var(--verde-claro), var(--verde-claro)) 0 100% / 0 2px no-repeat;
+    transition: background-size 0.5s var(--curva);
+  }
+
+  .contato__email-link:hover {
+    background-size: 100% 2px;
+  }
+
+  .contato__canais {
+    display: grid;
+  }
+
+  .contato__canais li {
+    display: grid;
+    gap: 6px;
+    padding-block: 24px;
+    border-bottom: 1px solid var(--linha-clara);
+    font-size: 1.125rem;
+  }
+
+  .contato__canais .mono {
+    font-size: 0.75rem;
+    color: var(--texto-claro-2);
+  }
+
+  .contato__canais a {
+    text-decoration: none;
+    font-weight: 600;
+    justify-self: start;
+    padding-block: 2px;
+  }
+
+  .contato__canais a:hover {
+    text-decoration: underline;
+  }
+
+  .contato__canais .contato__secundario {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--texto-claro-2);
+    text-decoration: underline;
+  }
+
+  @media (min-width: 768px) {
+    .contato__canais {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .contato__canais li {
+      padding-right: 24px;
+    }
+
+    .contato__canais li + li {
+      border-left: 1px solid var(--linha-clara);
+      padding-left: 24px;
+    }
+  }
+</style>
