@@ -1,0 +1,22 @@
+/* Gerado por scripts/preparar-fontes.mjs — não edite à mão. */
+@font-face {
+  font-family: 'Mona Expandida';
+  src: url('/fonts/mona-expandida.woff2') format('woff2');
+  font-weight: 500 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mona Texto';
+  src: url('/fonts/mona-texto.woff2') format('woff2');
+  font-weight: 380 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist-mono.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
