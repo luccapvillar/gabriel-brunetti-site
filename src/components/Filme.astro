@@ -5,6 +5,7 @@
  */
 import Foto from './Foto.astro';
 import Rotulo from './Rotulo.astro';
+import { caminho } from '../data/caminho';
 import { capitulos, formatarTempo } from '../data/gabriel';
 
 ---
@@ -34,8 +35,8 @@ import { capitulos, formatarTempo } from '../data/gabriel';
             aria-label="Filme: Do box à bandeirada"
             data-filme
           >
-            <source src="/video/gabriel-brunetti-filme.mp4" type="video/mp4" />
-            <a href="/video/gabriel-brunetti-filme.mp4">Baixar o filme (MP4)</a>
+            <source src={caminho('video/gabriel-brunetti-filme.mp4')} type="video/mp4" />
+            <a href={caminho('video/gabriel-brunetti-filme.mp4')}>Baixar o filme (MP4)</a>
           </video>
           <button class="player__capa" type="button" data-filme-play>
             <span class="player__play" aria-hidden="true">

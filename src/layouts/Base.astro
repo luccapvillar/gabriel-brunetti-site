@@ -1,6 +1,7 @@
 ---
 import '../styles/fontes.css';
 import '../styles/global.css';
+import { caminho } from '../data/caminho';
 import { NOME, NOME_COMPLETO, CATEGORIA, CIDADE, UF, EQUIPE, PATROCINADORA, IDADE, contato } from '../data/gabriel';
 
 interface Props {
@@ -12,7 +13,7 @@ const { titulo, descricao } = Astro.props;
 const site = Astro.site;
 // Sem domínio definido (pendência 6), os endereços ficam relativos e o canonical não é gerado.
 const absoluto = (caminho: string) => (site ? new URL(caminho, site).href : caminho);
-const og = absoluto('/og.jpg');
+const og = absoluto(caminho('og.jpg'));
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -62,12 +63,12 @@ const jsonLd = {
     <meta name="color-scheme" content="dark light" />
     {site && <link rel="canonical" href={site.href} />}
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href={caminho('favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={caminho('favicon-32.png')} type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href={caminho('apple-touch-icon.png')} />
 
-    <link rel="preload" href="/fonts/mona-expandida.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/mona-texto.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={caminho('fonts/mona-expandida.woff2')} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={caminho('fonts/mona-texto.woff2')} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:type" content="profile" />
     <meta property="og:locale" content="pt_BR" />

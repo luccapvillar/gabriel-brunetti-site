@@ -5,10 +5,12 @@ import { loadEnv } from 'vite';
 
 // O domínio ainda não foi definido (ver docs/BRIEFING.md, pendência 6).
 // Quando existir, basta colocar PUBLIC_SITE_URL no .env: canonical, Open Graph e JSON-LD passam a usar o endereço completo.
-const { PUBLIC_SITE_URL } = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
+const { PUBLIC_SITE_URL, BASE_PATH } = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
 
 export default defineConfig({
   site: PUBLIC_SITE_URL || undefined,
+  // Subpasta do site (só para a prévia no GitHub Pages; no domínio próprio fica "/")
+  base: BASE_PATH || '/',
   // Sem domínio definido, não gera sitemap com endereço inventado.
   integrations: PUBLIC_SITE_URL ? [sitemap()] : [],
   compressHTML: true,

@@ -2,6 +2,7 @@
 import Foto from './Foto.astro';
 import Rotulo from './Rotulo.astro';
 import { imagem } from '../data/imagens';
+import { caminho } from '../data/caminho';
 import { capitulos, formatarTempo, IDADE } from '../data/gabriel';
 
 const poster = await imagem('perfil-loop-poster');
@@ -37,7 +38,7 @@ const ficha = [
             aria-label="Gabriel fechando o macacão antes de entrar na pista"
             data-loop
           >
-            <source src="/video/perfil-loop.mp4" type="video/mp4" />
+            <source src={caminho('video/perfil-loop.mp4')} type="video/mp4" />
           </video>
         </div>
         <button class="perfil__pausa" type="button" aria-pressed="false" data-loop-botao hidden>

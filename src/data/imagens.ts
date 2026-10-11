@@ -5,6 +5,7 @@
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { caminho } from './caminho';
 
 // Caminho a partir da raiz do projeto (import.meta.url muda depois do build)
 const pasta = join(process.cwd(), 'public/img');
@@ -33,8 +34,8 @@ async function ler(nome: string): Promise<Imagem> {
     larguras,
     largura: width,
     altura: height,
-    srcset: (formato) => larguras.map((l) => `/img/${nome}-${l}.${formato} ${l}w`).join(', '),
-    src: (largura = 1024) => `/img/${nome}-${larguras.find((l) => l >= largura) ?? maior}.webp`,
+    srcset: (formato) => larguras.map((l) => `${caminho(`img/${nome}-${l}.${formato}`)} ${l}w`).join(', '),
+    src: (largura = 1024) => caminho(`img/${nome}-${larguras.find((l) => l >= largura) ?? maior}.webp`),
   };
 }
 
