@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { IDADE } from '../data/gabriel';
 import Cabecalho from '../components/Cabecalho.astro';
 import Abertura from '../components/Abertura.astro';
 import Resumo from '../components/Resumo.astro';
@@ -16,8 +17,7 @@ import Contato from '../components/Contato.astro';
 import Rodape from '../components/Rodape.astro';
 
 const titulo = 'Gabriel Brunetti #33 — Piloto de Kart F400 Júnior | Site oficial';
-const descricao =
-  'Gabriel Lima Brunetti, 14 anos, de Valparaíso de Goiás. Piloto do kart #33 na F400 Júnior com a Dibo Racing, três vezes 2º lugar no BKS, no Campeonato Brasiliense e no Brasileiro. Objetivo: Stock Car.';
+const descricao = `Gabriel Lima Brunetti, ${IDADE} anos, de Valparaíso de Goiás. Piloto do kart #33 na F400 Júnior com a Dibo Racing, 2º lugar em três etapas do BKS 2026, no Campeonato Brasiliense e no Brasileiro. Objetivo: Stock Car.`;
 ---
 
 <Base titulo={titulo} descricao={descricao}>

@@ -1,7 +1,7 @@
 ---
 import Foto from './Foto.astro';
 import Rotulo from './Rotulo.astro';
-import { resultados, campeonatos } from '../data/gabriel';
+import { resultados, campeonatos, ANO_RESULTADOS } from '../data/gabriel';
 ---
 
 <section class="resultados claro secao" id="resultados" aria-labelledby="titulo-resultados">
@@ -11,20 +11,20 @@ import { resultados, campeonatos } from '../data/gabriel';
     <div class="resultados__topo">
       <h2 class="resultados__destaque" id="titulo-resultados">
         <span class="resultados__grande" aria-hidden="true">3× 2º</span>
-        <span class="resultados__frase">Três segundos lugares no BKS</span>
+        <span class="resultados__frase">Três segundos lugares em etapas do BKS {ANO_RESULTADOS}</span>
       </h2>
       <p class="lead texto-2 resultados__lead">
-        Na 2ª e na 3ª etapa, no Kartódromo Ayrton Senna; na 5ª, no Kartódromo Brasília Kart. As três em Brasília.
+        Na 2ª e na 3ª etapa, no Kartódromo Ayrton Senna; na 5ª, no Kartódromo Brasília Kart. As três em Brasília, em {ANO_RESULTADOS}.
       </p>
     </div>
 
     <div class="folha" data-revelar>
       <div class="folha__cabeca mono">
         <span>Folha de resultados</span>
-        <span>BKS · Kart</span>
+        <span>BKS {ANO_RESULTADOS} · Resultados por etapa</span>
       </div>
       <table>
-        <caption class="visualmente-oculto">Resultados de destaque de Gabriel Brunetti no BKS</caption>
+        <caption class="visualmente-oculto">Resultados de destaque de Gabriel Brunetti em etapas do BKS {ANO_RESULTADOS}</caption>
         <thead class="mono">
           <tr>
             <th scope="col">Pos.</th>
@@ -42,7 +42,7 @@ import { resultados, campeonatos } from '../data/gabriel';
                 </td>
                 <th scope="row">
                   {r.etapa}
-                  <span class="mono">{r.campeonato}</span>
+                  <span class="mono">{r.campeonato} · {ANO_RESULTADOS}</span>
                 </th>
                 <td>
                   {r.local}

@@ -39,7 +39,7 @@ Veio do questionário respondido pelo piloto e das correções enviadas depois p
 | Campo | Valor |
 | --- | --- |
 | Nome completo | Gabriel Lima Brunetti |
-| Idade | 14 anos e 10 meses (em 11/10/2026). Data de nascimento exata **não informada** |
+| Idade | 14 anos (em 11/10/2026). Nascimento: **7 de março** (informado pelo cliente); ano **2012**, deduzido da idade. O site calcula a idade sozinho |
 | Cidade | Valparaíso de Goiás (GO), no Entorno do Distrito Federal |
 | Telefone | (61) 99921-8444, **com WhatsApp** (confirmado pelo cliente em 11/10/2026) |
 | E-mail | gabrielbruneti098@gmail.com (com **um** "t" em "bruneti", exatamente assim) |
@@ -47,12 +47,12 @@ Veio do questionário respondido pelo piloto e das correções enviadas depois p
 | Número | 33 (placa amarela, visível em todas as fotos) |
 | Categoria | **Kart F400 Júnior**. O "F4J" da placa é a sigla da F400 Júnior |
 | Estilo de pilotagem | Limpo e conservador, com boa noção de ultrapassagem (definição do próprio Gabriel) |
-| Referência | Max Verstappen, principalmente pela mentalidade |
+| Referência | Max Verstappen, principalmente pela mentalidade. O número 33 tem **um pouco** de relação com ele (confirmado pelo cliente; usar com essa intensidade) |
 | Motivação inicial | Influência do pai |
-| Início dos treinamentos | Outubro do ano passado → **outubro de 2025** (deduzido da data de hoje; ver pendências) |
+| Início dos treinamentos | **Outubro de 2025** (confirmado pelo cliente) |
 | Competições atuais | Campeonato Brasiliense e Campeonato Brasileiro |
 | Campeonatos já disputados | BKS e Circuito Paulista |
-| Resultados de destaque | **3 segundos lugares** (o questionário dizia 4; o cliente corrigiu para 3): 2ª etapa, no Kartódromo Ayrton Senna (Brasília); 3ª etapa, no Kartódromo Ayrton Senna (Brasília); 5ª etapa, no Kartódromo Brasília Kart (Brasília). São do BKS (resposta à pergunta sobre os resultados no BKS). Ano **não informado** |
+| Resultados de destaque | **3 segundos lugares** (o questionário dizia 4; o cliente corrigiu para 3): 2ª etapa, no Kartódromo Ayrton Senna (Brasília); 3ª etapa, no Kartódromo Ayrton Senna (Brasília); 5ª etapa, no Kartódromo Brasília Kart (Brasília). São de **etapas do BKS 2026**, não do campeonato inteiro (confirmado pelo cliente) |
 | Preparação | Academia 5× por semana · kart 2× por semana · simulador toda semana (frequência exata do simulador não informada; usar "toda semana", nunca "1×") |
 | Equipe e pessoas no projeto | Equipe **Dibo Racing** e os pais |
 | Patrocinadora | **Brunetti Odontologia**, autorizada a aparecer no site. O nome está nas laterais e no bico do kart. Não há arquivo de logo: usar o nome em texto |
@@ -69,7 +69,7 @@ Veio do questionário respondido pelo piloto e das correções enviadas depois p
 
 ### O que NÃO sabemos (não inventar)
 
-O ano dos resultados do BKS, a data de nascimento, o domínio do site, audiência e números de seguidores, cotas e valores de patrocínio, quem tirou as fotos sem marca d'água, a ordem cronológica entre BKS e Circuito Paulista, especificações técnicas do motor e da categoria, e se o número 33 tem relação com o Verstappen (que usou o 33 até 2021). Esta última seria uma ótima história, mas **só entra se o cliente confirmar**.
+O domínio do site, audiência e números de seguidores, cotas e valores de patrocínio, quem tirou as fotos sem marca d'água, a ordem cronológica entre BKS e Circuito Paulista, especificações técnicas do motor e da categoria.
 
 ---
 
@@ -128,7 +128,7 @@ Transcrita com Whisper `medium` e conferida com `large-v3`. Os tempos são do fi
 | 1:40 | "Antes da largada, você [fica / tem que estar] pensando principalmente em onde você está largando, em como você pode progredir dentro da corrida, qual a melhor posição que você deve estar, onde você pode fazer uma ultrapassagem." |
 | 1:50 | "E é isso, quando você está em primeiro, você tem que conduzir os karts que estão atrás de você, você tem que conduzir bem o pelotão quando você está em primeiro, porque senão você leva uma punição, e a punição no kart é severa. Você leva a punição e cai três posições, quatro posições." |
 
-**Atenção:** no trecho de 1:40, os dois modelos discordam ("fica pensando" × "tem que estar pensando"). Nesse ponto, citar só a parte em que concordam, por exemplo: *"[…] pensando principalmente em onde você está largando, em como você pode progredir dentro da corrida […] onde você pode fazer uma ultrapassagem."* Também é possível pedir ao cliente que ouça e confirme. Cortes nas citações sempre marcados com […].
+**Resolvido:** no trecho de 1:40 o cliente confirmou que ele diz **"fica pensando"**. (Antes, os dois modelos discordavam: "fica pensando" × "tem que estar pensando".) Nesse ponto, citar só a parte em que concordam, por exemplo: *"[…] pensando principalmente em onde você está largando, em como você pode progredir dentro da corrida […] onde você pode fazer uma ultrapassagem."* Também é possível pedir ao cliente que ouça e confirme. Cortes nas citações sempre marcados com […].
 
 Ligações com os fatos, sem inventar: a fala sobre "conduzir bem o pelotão" para não levar punição conversa com o estilo "limpo e conservador"; a fala sobre onde fazer a ultrapassagem conversa com "boa noção de ultrapassagem"; e a fala inteira mostra a *mentalidade* que ele admira no Verstappen.
 
@@ -283,10 +283,10 @@ Campeonatos: temporada atual — Campeonato Brasiliense e Campeonato Brasileiro;
 ## 9. Pendências para confirmar com o cliente
 
 1. ~~O telefone (61) 99921-8444 tem WhatsApp?~~ **Confirmado: sim.** Os botões de patrocínio levam para o WhatsApp.
-2. Data de nascimento (para a idade se atualizar sozinha; hoje está fixa em "14 anos").
-3. Ano dos três segundos lugares no BKS.
-4. "Outubro do ano passado" = outubro de 2025?
-5. O número 33 tem relação com o Verstappen?
+2. ~~Data de nascimento~~ **7 de março** (ano 2012 deduzido da idade). A idade se atualiza sozinha.
+3. ~~Ano dos três segundos lugares no BKS~~ **2026**, em etapas (não no campeonato inteiro).
+4. ~~"Outubro do ano passado" = outubro de 2025?~~ **Sim.**
+5. ~~O número 33 tem relação com o Verstappen?~~ **Um pouco.** Entrou no perfil com essa medida.
 6. Domínio do site.
-7. O trecho "fica pensando" × "tem que estar pensando" (vídeo, 1:40).
-8. Como o Gabriel tem 14 anos, vale considerar se o contato público deve ser de um dos pais.
+7. ~~"fica pensando" × "tem que estar pensando"~~ **"fica pensando".**
+8. ~~Contato público de um dos pais?~~ **Não: o contato é do próprio Gabriel.**

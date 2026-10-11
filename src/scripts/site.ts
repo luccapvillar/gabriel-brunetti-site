@@ -1,7 +1,7 @@
 /**
  * Único script do site. Tudo aqui é melhoria progressiva: sem JS, o conteúdo continua completo.
  */
-import { mesesDesdeInicio } from '../data/gabriel';
+import { mesesDesdeInicio, idadeEm } from '../data/gabriel';
 
 const $ = <T extends Element = HTMLElement>(sel: string, raiz: ParentNode = document) => raiz.querySelector<T>(sel);
 const $$ = <T extends Element = HTMLElement>(sel: string, raiz: ParentNode = document) => [...raiz.querySelectorAll<T>(sel)];
@@ -101,7 +101,9 @@ function revelar() {
 }
 
 function contadores() {
-  // O número de meses é atualizado para a data de quem visita
+  // Idade e meses de treino são atualizados para a data de quem visita
+  const idade = String(idadeEm());
+  $$('[data-idade]').forEach((el) => (el.textContent = idade));
   const meses = mesesDesdeInicio();
   $$('[data-meses]').forEach((el) => {
     el.dataset.contador = String(meses);

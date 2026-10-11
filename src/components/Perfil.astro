@@ -2,7 +2,7 @@
 import Foto from './Foto.astro';
 import Rotulo from './Rotulo.astro';
 import { imagem } from '../data/imagens';
-import { capitulos, formatarTempo } from '../data/gabriel';
+import { capitulos, formatarTempo, IDADE } from '../data/gabriel';
 
 const poster = await imagem('perfil-loop-poster');
 const lideranca = capitulos.find((c) => c.id === 'na-lideranca')!;
@@ -10,7 +10,8 @@ const largada = capitulos.find((c) => c.id === 'antes-da-largada')!;
 
 const ficha = [
   ['Nome', 'Gabriel Lima Brunetti'],
-  ['Idade', '14 anos'],
+  ['Idade', `${IDADE} anos`],
+  ['Aniversário', '7 de março'],
   ['Cidade', 'Valparaíso de Goiás (GO)'],
   ['Número', '33'],
   ['Categoria', 'Kart F400 Júnior'],
@@ -50,7 +51,7 @@ const ficha = [
         <Rotulo numero="01" nome="Perfil" />
         <h2 class="h2" id="titulo-perfil">Quem pilota o #33</h2>
         <p class="lead perfil__lead">
-          Gabriel Lima Brunetti tem 14 anos e é de Valparaíso de Goiás, no Entorno do Distrito Federal. Chegou ao
+          Gabriel Lima Brunetti tem <span data-idade>{IDADE}</span> anos e é de Valparaíso de Goiás, no Entorno do Distrito Federal. Chegou ao
           automobilismo pela influência do pai, começou a treinar em outubro de 2025 e hoje corre com a equipe Dibo
           Racing, acompanhado de perto pelos pais.
         </p>
@@ -60,7 +61,7 @@ const ficha = [
             ficha.map(([termo, valor]) => (
               <div>
                 <dt>{termo}</dt>
-                <dd>{valor}</dd>
+                <dd>{termo === 'Idade' ? <><span data-idade>{IDADE}</span> anos</> : valor}</dd>
               </div>
             ))
           }
@@ -103,7 +104,10 @@ const ficha = [
       <li data-revelar>
         <h3 class="mono">Referência</h3>
         <p class="perfil__ponto-titulo">Max Verstappen</p>
-        <p class="texto-2">Max Verstappen é a principal referência de Gabriel, principalmente pela mentalidade.</p>
+        <p class="texto-2">
+          Max Verstappen é a principal referência de Gabriel, principalmente pela mentalidade. O 33 do kart tem um pouco
+          a ver com ele, que correu com o 33 na Fórmula 1.
+        </p>
       </li>
       <li data-revelar style="--atraso:0.08s">
         <h3 class="mono">Origem</h3>

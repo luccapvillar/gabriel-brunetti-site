@@ -7,6 +7,7 @@
  * No celular, foto e recorte usam o enquadramento 3:4 centrado no capacete.
  */
 import { imagem } from '../data/imagens';
+import { IDADE } from '../data/gabriel';
 import { textoEmCurvas } from '../../scripts/texto-em-curvas.mjs';
 import {
   FOTO,
@@ -60,7 +61,7 @@ const DESKTOP = '(min-width: 1024px)';
 const dados = [
   { rotulo: 'Categoria', valor: 'Kart F400 Júnior' },
   { rotulo: 'Temporada', valor: 'Brasiliense e Brasileiro' },
-  { rotulo: 'Destaque', valor: '3× 2º lugar no BKS' },
+  { rotulo: 'Destaque', valor: '3× 2º em etapas do BKS 2026' },
   { rotulo: 'Objetivo', valor: 'Stock Car' },
 ];
 ---
@@ -113,7 +114,7 @@ const dados = [
       <span class="linha"><span>Brunetti</span></span>
     </h1>
     <p class="abertura__lead lead">
-      14 anos, de Valparaíso de Goiás. Corre na F400 Júnior com a equipe Dibo Racing, disputa o Campeonato Brasiliense e o
+      <span data-idade>{IDADE}</span> anos, de Valparaíso de Goiás. Corre na F400 Júnior com a equipe Dibo Racing, disputa o Campeonato Brasiliense e o
       Campeonato Brasileiro e tem um objetivo de longo prazo: a Stock Car.
     </p>
     <div class="abertura__botoes">
